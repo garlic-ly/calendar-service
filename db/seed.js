@@ -1,10 +1,9 @@
 var db = require('./index.js');
 var faker = require('faker');
 
-var roomData = [];
-var reservedData = [];
-
 var createSeedData = function(callback) {
+  var roomData = [];
+  var reservedData = [];
   for (let i = 0; i < 100; i++) {
     var room = {
       id: i + 1,
@@ -43,6 +42,6 @@ var loadData = function(roomsArray, reservationsArray) {
   console.log('All Data Loaded');
 }
 
-createSeedData(() => {
+createSeedData((roomData, reservedData) => {
   loadData(roomData, reservedData);
 });
