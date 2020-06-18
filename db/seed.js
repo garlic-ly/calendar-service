@@ -5,11 +5,11 @@ var roomData = [];
 var reservedData = [];
 
 var createSeedData = function(callback) {
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 100; i++) {
     var room = {
       id: i + 1,
       totalRatings: Math.floor(Math.random() * (1000 - 0)),
-      averageRating: Math.floor(Math.random() * (5 - 0)),
+      averageRating: Math.floor(Math.random() * (5 - 0)) + 1,
       nightlyRate: Math.floor(Math.random() * (1,200 - 0)) + 100,
       cleaningFee: Math.floor(Math.random() * (250 - 0)) + 25,
     };
@@ -37,8 +37,10 @@ var loadData = function(roomsArray, reservationsArray) {
           if (error) console.log('Error: ', error);
         });
       }
+      reservationsArray = reservationsArray.slice(6);
     });
   }
+  console.log('All Data Loaded');
 }
 
 createSeedData(() => {
