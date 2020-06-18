@@ -7,7 +7,7 @@ USE airbnb;
 CREATE TABLE rooms (
   id INTEGER AUTO_INCREMENT PRIMARY KEY,
   totalRatings INTEGER,
-  averageRatings INTEGER,
+  averageRating INTEGER,
   nightlyRate INTEGER,
   cleaningFee INTEGER
 );
