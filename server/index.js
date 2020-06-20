@@ -4,17 +4,24 @@ var db = require('../db/index.js');
 const port = 3001;
 
 
-// app.use(express.static(__dirname + '../client/dist'));
+app.use(express.static(__dirname + '/../client/dist'));
 
 // GET Route
 app.get('/api/rooms/:roomId', (req, res) => {
   var roomId = req.params.roomId;
-  var sqlQuery = 'SELECT * FROM rooms, reservations WHERE rooms.id = ? AND reservations.roomId = ?';
-  db.connection.query(sqlQuery, [roomId, roomId], (error, results, fields) => {
+  var roomQuery = 'SELECT * FROM rooms WHERE id = ?';
+  db.connection.query(roomQuery, [roomId], (error, roomResults, fields) => {
     if (error) {
       res.status(404).send(error);
     }
-    res.status(200).send(results);
+    var resQuery = 'SELECT resId, startDate, endDate FROM reservations WHERE roomId = ?'
+    db.connection.query(resQuery, [roomId], (error, resResults, fields) => {
+      if (error) {
+        res.status(404).send(error);
+      }
+      var results = roomResults.concat(resResults);
+      res.status(200).send(results);
+    });
   });
 });
 
