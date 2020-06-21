@@ -76,13 +76,14 @@ class App extends React.Component {
     }
     this.getRoomData = this.getRoomData.bind(this);
     this.guestMenuToggle = this.guestMenuToggle.bind(this);
+    this.updateGuestCount = this.updateGuestCount.bind(this);
   }
 
   getRoomData () {
     axios.get(`/api/rooms/2`)
       .then(results => {
         let reservations = results.data.slice(1);
-        console.log(reservations);
+        // console.log(reservations);
         this.setState({
           averageRating: results.data[0].averageRating,
           cleaningFee: results.data[0].cleaningFee,
@@ -104,7 +105,24 @@ class App extends React.Component {
     });
   }
 
-
+  updateGuestCount(e) {
+    let name = e.target.name;
+    let newCount, newGuestTotal;
+    if (e.target.innerHTML === '+') {
+      newCount = this.state[name] + 1;
+      newGuestTotal = this.state.guestCount + 1;
+    } else {
+      if (this.state[name] === 0) {
+        return;
+      }
+      newCount = this.state[name] - 1;
+      newGuestTotal = this.state.guestCount - 1;
+    }
+    this.setState({
+      [name]: newCount,
+      guestCount: newGuestTotal
+    })
+  }
 
   /*
     Conditional Render - If checkout data and checkin data are not null
@@ -128,7 +146,7 @@ class App extends React.Component {
         </CalendarDiv>
         <GuestsDiv>
           <Guest dropdownOpen={this.state.isGuestDropdownOpen} guestMenuToggle={this.guestMenuToggle}
-          guestCount={this.state.guestCount}
+          guestCount={this.state.guestCount} updateGuestCount={this.updateGuestCount}
           adults={this.state.adults} children={this.state.children} infants={this.state.infants}
           />
         </GuestsDiv>

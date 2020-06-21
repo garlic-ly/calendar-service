@@ -14,14 +14,15 @@ let Guest = props => {
   let menuClicked = () => {
     if (props.dropdownOpen) {
       return (
-        <GuestDropdown adults={props.adults} children={props.children} infants={props.infants}/>
+        <GuestDropdown updateGuestCount={props.updateGuestCount}
+        adults={props.adults} children={props.children} infants={props.infants}/>
       )
     }
   }
 
   return (
     <div>
-      <div onClick={props.guestMenuToggle}>
+      <div className='guest' onClick={props.guestMenuToggle}>
         <span>Guests</span>
         <div>{numberOfGuests()}</div>
       </div>

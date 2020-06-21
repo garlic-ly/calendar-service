@@ -1,17 +1,30 @@
 import React from 'react';
+import styled from 'styled-components';
 
 let GuestDropdown = props => {
 
   return (
     <div>
       <div>
-        <span>Adults</span><button name='adults'>-</button><span>{props.adults}</span><button name='adults'>+</button>
+        <span>Adults</span><div style={{float: 'right'}}>
+          <button onClick={(e) => props.updateGuestCount(e)} name='adults'>-</button>
+          <span>{props.adults}</span>
+          <button onClick={(e) => props.updateGuestCount(e)} className='adults-add' name='adults'>+</button>
+        </div>
       </div>
       <div>
-        <span>Children</span><button name='children'>-</button><span>{props.children}</span><button name='children'>+</button>
+        <span>Children</span><div style={{float: 'right'}}>
+          <button onClick={props.updateGuestCount} name='children'>-</button>
+          <span>{props.children}</span>
+          <button onClick={props.updateGuestCount} name='children'>+</button>
+        </div>
       </div>
       <div>
-        <span name='infants'>Infants</span><button>-</button><span>{props.infants}</span><button name='infants'>+</button>
+        <span>Infants</span><div style={{float: 'right'}}>
+          <button onClick={props.updateGuestCount} name='infants'>-</button>
+          <span>{props.infants}</span>
+          <button onClick={props.updateGuestCount} name='infants'>+</button>
+        </div>
       </div>
     </div>
   );
