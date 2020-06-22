@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import styled from 'styled-components';
+import Guest from './guest.jsx';
 
 // Styled-Components
 const StyledWrapper = styled.div`
@@ -12,33 +13,33 @@ const StyledWrapper = styled.div`
   width: 300px;
   height: 300px;
 `
-const DollarAmt = styled.span`
+const DollarAmtSpan = styled.span`
   font-size: 22px;
   font-weight: bold;
 `
-const Nights = styled.span`
+const NightSpan = styled.span`
   font-size: 16px;
   font-weight: regular;
 `
-const Price = styled.div`
+const PriceDiv = styled.div`
   float: left;
   padding: 10%;
 `
-const Reviews = styled.div`
+const ReviewsDiv = styled.div`
   float: right;
   padding: 10%;
 `
-const ReviewAvg = styled.span`
+const ReviewAvgSpan = styled.span`
   padding-right: 10px;
   font-size: 14px;
   color: grey;
 `
-const Calendar = styled.div`
+const CalendarDiv = styled.div`
   clear: both;
   padding: 10%;
   padding-top: 0%;
 `
-const Guests = styled.div`
+const GuestsDiv = styled.div`
   clear: both;
   padding: 10%;
   padding-top: 0%;
@@ -61,8 +62,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      guestCount: 0,
-      adults: 0,
+      guestCount: 1,
+      adults: 1,
+      isGuestDropdownOpen: false,
       children: 0,
       infants: 0,
       roomTotal: 0,
@@ -73,13 +75,15 @@ class App extends React.Component {
       totalRatings: 0
     }
     this.getRoomData = this.getRoomData.bind(this);
+    this.guestMenuToggle = this.guestMenuToggle.bind(this);
+    this.updateGuestCount = this.updateGuestCount.bind(this);
   }
 
   getRoomData () {
     axios.get(`/api/rooms/2`)
       .then(results => {
         let reservations = results.data.slice(1);
-        console.log(reservations);
+        // console.log(reservations);
         this.setState({
           averageRating: results.data[0].averageRating,
           cleaningFee: results.data[0].cleaningFee,
@@ -95,6 +99,31 @@ class App extends React.Component {
     this.getRoomData();
   }
 
+  guestMenuToggle() {
+    this.setState({
+      isGuestDropdownOpen: !this.state.isGuestDropdownOpen
+    });
+  }
+
+  updateGuestCount(e) {
+    let name = e.target.name;
+    let newCount, newGuestTotal;
+    if (e.target.innerHTML === '+') {
+      newCount = this.state[name] + 1;
+      newGuestTotal = this.state.guestCount + 1;
+    } else {
+      if (this.state[name] === 0) {
+        return;
+      }
+      newCount = this.state[name] - 1;
+      newGuestTotal = this.state.guestCount - 1;
+    }
+    this.setState({
+      [name]: newCount,
+      guestCount: newGuestTotal
+    })
+  }
+
   /*
     Conditional Render - If checkout data and checkin data are not null
     <span>Amount x Number of Nights Nights</span> <span>RoomTotal</span>
@@ -106,18 +135,21 @@ class App extends React.Component {
   render() {
     return (
       <StyledWrapper>
-        <Price>
-          <DollarAmt>{this.state.nightlyRate}</DollarAmt> <Nights> / Night</Nights>
-        </Price>
-        <Reviews>
-          <ReviewAvg>{this.state.averageRating} ({this.state.totalRatings})</ReviewAvg>
-        </Reviews>
-        <Calendar>
+        <PriceDiv>
+          <DollarAmtSpan>{this.state.nightlyRate}</DollarAmtSpan> <NightSpan> / Night</NightSpan>
+        </PriceDiv>
+        <ReviewsDiv>
+          <ReviewAvgSpan>{this.state.averageRating} ({this.state.totalRatings})</ReviewAvgSpan>
+        </ReviewsDiv>
+        <CalendarDiv>
           Calendar Place Holder
-        </Calendar>
-        <Guests>
-          Guest Dropdown Place Holder
-        </Guests>
+        </CalendarDiv>
+        <GuestsDiv>
+          <Guest dropdownOpen={this.state.isGuestDropdownOpen} guestMenuToggle={this.guestMenuToggle}
+          guestCount={this.state.guestCount} updateGuestCount={this.updateGuestCount}
+          adults={this.state.adults} children={this.state.children} infants={this.state.infants}
+          />
+        </GuestsDiv>
         <ButtonDiv>
           <Button style={{background: "linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)" }}>Reserve</Button>
         </ButtonDiv>
