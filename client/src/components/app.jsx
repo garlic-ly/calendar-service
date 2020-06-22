@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import Guest from './guest';
+import Guest from './guest.jsx';
 
 // Styled-Components
 const StyledWrapper = styled.div`
@@ -132,23 +132,40 @@ class App extends React.Component {
   */
 
   render() {
+    const { nightlyRate } = this.state;
+    const { averageRating } = this.state;
+    const { totalRatings } = this.state;
+    const { isGuestDropdownOpen } = this.state;
+    const { guestCount } = this.state;
+    const { adults } = this.state;
+    const { childrenCount } = this.state;
+    const { infants } = this.state;
     return (
       <StyledWrapper>
         <PriceDiv>
-          <DollarAmtSpan>{this.state.nightlyRate}</DollarAmtSpan>
+          <DollarAmtSpan>{nightlyRate}</DollarAmtSpan>
           <NightSpan> / Night</NightSpan>
         </PriceDiv>
         <ReviewsDiv>
-          <ReviewAvgSpan>{this.state.averageRating} ({this.state.totalRatings})</ReviewAvgSpan>
+          <ReviewAvgSpan>
+            {averageRating}
+            (
+            {totalRatings}
+            )
+          </ReviewAvgSpan>
         </ReviewsDiv>
         <CalendarDiv>
           Calendar Place Holder
         </CalendarDiv>
         <GuestsDiv>
           <Guest
-            dropdownOpen={this.state.isGuestDropdownOpen} guestMenuToggle={this.guestMenuToggle}
-            guestCount={this.state.guestCount} updateGuestCount={this.updateGuestCount}
-            adults={this.state.adults} childrenCount={this.state.childrenCount} infants={this.state.infants}
+            dropdownOpen={isGuestDropdownOpen}
+            guestMenuToggle={this.guestMenuToggle}
+            guestCount={guestCount}
+            updateGuestCount={this.updateGuestCount}
+            adults={adults}
+            childrenCount={childrenCount}
+            infants={infants}
           />
         </GuestsDiv>
         <ButtonDiv>

@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import GuestDropdown from './guestDropdown';
+import GuestDropdown from './guestDropdown.jsx';
 
 const GuestWrapper = styled.div`
   border-bottom-right-radius: 12px;
@@ -20,38 +21,42 @@ const GuestCountDiv = styled.div`
 
 const Guest = (props) => {
   const numberOfGuests = () => {
-    if (props.guestCount > 1) {
+    const { guestCount } = props;
+    if (guestCount > 1) {
       return (
         <span>
-          {props.guestCount}
-          guests
+          {guestCount} guests
         </span>
       );
     }
     return (
       <span>
-        {props.guestCount}
-        guest
+        {guestCount} guest
       </span>
     );
   };
 
   const menuClicked = () => {
     if (props.dropdownOpen) {
+      const { updateGuestCount } = props;
+      const { adults } = props;
+      const { childrenCount } = props;
+      const { infants } = props;
       return (
         <GuestDropdown
-          updateGuestCount={props.updateGuestCount}
-          adults={props.adults}
-          childrenCount={props.childrenCount}
-          infants={props.infants}
+          updateGuestCount={updateGuestCount}
+          adults={adults}
+          childrenCount={childrenCount}
+          infants={infants}
         />
       );
     }
   };
 
+  const { guestMenuToggle } = props;
   return (
     <div>
-      <GuestWrapper className="guest" onClick={props.guestMenuToggle}>
+      <GuestWrapper className="guest" onClick={guestMenuToggle}>
         <GuestSpan>GUESTS</GuestSpan>
         <GuestCountDiv>{numberOfGuests()}</GuestCountDiv>
       </GuestWrapper>
@@ -65,11 +70,11 @@ const Guest = (props) => {
 export default Guest;
 
 Guest.propTypes = {
-  dropdownOpen: React.propTypes.boolean.isRequired,
-  guestMenuToggle: React.propTypes.function.isRequired,
-  guestCount: React.propTypes.number.isRequired,
-  updateGuestCount: React.propTypes.function.isRequired,
-  adults: React.propTypes.number.isRequired,
-  childrenCount: React.propTypes.number.isRequired,
-  infants: React.propTypes.number.isRequired,
+  dropdownOpen: PropTypes.bool.isRequired,
+  guestMenuToggle: PropTypes.func.isRequired,
+  guestCount: PropTypes.number.isRequired,
+  updateGuestCount: PropTypes.func.isRequired,
+  adults: PropTypes.number.isRequired,
+  childrenCount: PropTypes.number.isRequired,
+  infants: PropTypes.number.isRequired,
 };
