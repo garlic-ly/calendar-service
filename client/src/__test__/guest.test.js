@@ -7,7 +7,7 @@ import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({adapter: new Adapter()});
 
 describe('Tests for Guest Component', () => {
-  it('Guest renders without crashing', () => {
+  test('Guest renders without crashing', () => {
     const mockCallBack = jest.fn();
     const options = {
       dropdownOpen: false,
@@ -22,7 +22,7 @@ describe('Tests for Guest Component', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('Tests click event', () => {
+  test('Tests click event', () => {
     const mockCallBack = jest.fn();
     const options = {
       dropdownOpen: false,
