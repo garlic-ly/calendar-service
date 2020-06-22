@@ -3,7 +3,6 @@ const path = require('path');
 const db = require('../db/index.js');
 
 const app = express();
-const port = 3001;
 
 app.use(express.static(path.join(__dirname, '/../client/dist')));
 
@@ -24,10 +23,6 @@ app.get('/api/rooms/:roomId', (req, res) => {
       res.status(200).send(results);
     });
   });
-});
-
-app.listen(port, () => {
-  console.log(`Now listening on port ${port}`);
 });
 
 module.exports = app;
