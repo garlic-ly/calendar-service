@@ -83,6 +83,7 @@ class App extends React.Component {
     this.guestMenuToggle = this.guestMenuToggle.bind(this);
     this.calendarToggle = this.calendarToggle.bind(this);
     this.updateGuestCount = this.updateGuestCount.bind(this);
+    this.calendarCheck = this.calendarCheck.bind(this);
   }
 
   componentDidMount() {
@@ -113,7 +114,7 @@ class App extends React.Component {
   calendarToggle() {
     this.setState({
       calendarOpen: !this.state.calendarOpen,
-    })
+    });
   }
 
   updateGuestCount(e) {
@@ -136,6 +137,23 @@ class App extends React.Component {
     });
   }
 
+  calendarCheck() {
+    if (this.state.calendarOpen) {
+      return <Calendar />;
+    }
+    const { checkin } = this.state;
+    const { checkout } = this.state;
+    const { calendarOpen } = this.state;
+    return (
+      <CheckInOut
+        checkin={checkin}
+        checkout={checkout}
+        calendarOpen={calendarOpen}
+        calendarToggle={this.calendarToggle}
+      />
+    );
+  }
+
   /*
     Conditional Render - If checkout data and checkin data are not null
     <span>Amount x Number of Nights Nights</span> <span>RoomTotal</span>
@@ -153,9 +171,6 @@ class App extends React.Component {
     const { adults } = this.state;
     const { childrenCount } = this.state;
     const { infants } = this.state;
-    const { checkin } = this.state;
-    const { checkout } = this.state;
-    const { calendarOpen } = this.state;
     return (
       <StyledWrapper>
         <PriceDiv>
@@ -171,12 +186,7 @@ class App extends React.Component {
           </ReviewAvgSpan>
         </ReviewsDiv>
         <CalendarDiv>
-          <CheckInOut
-            checkin={checkin}
-            checkout={checkout}
-            calendarOpen={calendarOpen}
-            calendarToggle={this.calendarToggle}
-          />
+          {this.calendarCheck()}
         </CalendarDiv>
         <GuestsDiv>
           <Guest

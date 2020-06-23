@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
 
@@ -22,14 +23,15 @@ const DateDiv = styled.div`
 `;
 
 const CheckInOut = (props) => {
-  return(
-    <CheckWrapper onClick={props.calendarToggle}>
+  const { checkin, checkout, calendarToggle } = props;
+  return (
+    <CheckWrapper onClick={calendarToggle}>
       <div>
         <CheckTitleDiv>
           CHECK-IN
         </CheckTitleDiv>
         <DateDiv>
-          {props.checkin}
+          {checkin}
         </DateDiv>
       </div>
       <div>
@@ -37,7 +39,7 @@ const CheckInOut = (props) => {
           CHECK-OUT
         </CheckTitleDiv>
         <DateDiv>
-          {props.checkout}
+          {checkout}
         </DateDiv>
       </div>
     </CheckWrapper>
@@ -45,3 +47,9 @@ const CheckInOut = (props) => {
 };
 
 export default CheckInOut;
+
+CheckInOut.propTypes = {
+  checkin: PropTypes.string.isRequired,
+  checkout: PropTypes.string.isRequired,
+  calendarToggle: PropTypes.func.isRequired,
+};
