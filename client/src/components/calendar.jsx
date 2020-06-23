@@ -7,7 +7,7 @@ class Calendar extends React.Component {
     super(props);
     this.state = {
       leftCalendarMoment: moment(),
-      rightCalendarMoment: moment().add(1, 'M'),
+      rightCalendarMoment: moment(this.leftCalendarMoment).add(1, 'M'),
       weekdays: moment.weekdaysMin(),
       months: moment.months(),
     };
@@ -21,32 +21,34 @@ class Calendar extends React.Component {
     this.daysInMonth = this.daysInMonth.bind(this);
     this.monthStart = this.monthStart.bind(this);
     this.monthArray = this.monthArray.bind(this);
+    this.moveForwardMonth = this.moveForwardMonth.bind(this);
+    this.moveBackMonth = this.moveBackMonth.bind(this);
   }
 
   // Get Month, Date, Year, Num of Days per month, etc
-  month() {
-    return moment().format('MMMM');
+  month(calMoment) {
+    return moment(calMoment).format('MMMM');
   }
 
   today() {
     return moment().get('date');
   }
 
-  year() {
-    return moment().format('Y');
+  year(calMoment) {
+    return moment(calMoment).format('Y');
   }
 
-  daysInMonth() {
-    return moment().daysInMonth();
+  daysInMonth(calMoment) {
+    return moment(calMoment).daysInMonth();
   }
 
-  monthStart() {
-    return (moment().startOf('month').format('d'));
+  monthStart(calMoment) {
+    return (moment(calMoment).startOf('month').format('d'));
   }
 
   // Create Arrays of empty dates, actual month days, and a combination of both
-  blankDates() {
-    const numOfBlanks = this.monthStart();
+  blankDates(calMoment) {
+    const numOfBlanks = this.monthStart(calMoment);
     const totalBlanks = [];
     for (let i = 0; i < numOfBlanks; i += 1) {
       totalBlanks.push(' ');
@@ -54,8 +56,8 @@ class Calendar extends React.Component {
     return totalBlanks;
   }
 
-  monthDates() {
-    const numOfDays = this.daysInMonth();
+  monthDates(calMoment) {
+    const numOfDays = this.daysInMonth(calMoment);
     const daysOfMonth = [];
     for (let i = 1; i <= numOfDays; i += 1) {
       daysOfMonth.push(i);
@@ -63,9 +65,9 @@ class Calendar extends React.Component {
     return daysOfMonth;
   }
 
-  monthArray() {
-    const blank = this.blankDates();
-    const trueDays = this.monthDates();
+  monthArray(calMoment) {
+    const blank = this.blankDates(calMoment);
+    const trueDays = this.monthDates(calMoment);
     const totalDays = blank.concat(trueDays);
     let week = [];
     const month = [];
@@ -85,8 +87,8 @@ class Calendar extends React.Component {
     return weekdays.map((weekday) => <td key={weekday}>{weekday}</td>);
   }
 
-  allDates() {
-    const month = this.monthArray();
+  allDates(calMoment) {
+    const month = this.monthArray(calMoment);
     return month.map((singleWeek, weekIndex) => (
       <tr key={weekIndex}>
         {singleWeek.map((oneDay, dayIndex) => <td key={dayIndex}>{oneDay}</td>)}
@@ -94,25 +96,60 @@ class Calendar extends React.Component {
     ));
   }
 
+  moveForwardMonth() {
+    this.setState({
+      leftCalendarMoment: this.state.leftCalendarMoment.add(1, 'M'),
+      rightCalendarMoment: this.state.rightCalendarMoment.add(1, 'M'),
+    });
+  }
+
+  moveBackMonth() {
+    this.setState({
+      leftCalendarMoment: this.state.leftCalendarMoment.subtract(1, 'M'),
+      rightCalendarMoment: this.state.rightCalendarMoment.subtract(1, 'M'),
+    });
+  }
+
   render() {
+    const { leftCalendarMoment, rightCalendarMoment } = this.state;
     return (
       <div>
-        <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
-          <button> B </button>
-          <span>{this.month()}</span>
-          <button> F </button>
+        <div className='leftCalendar'>
+          <div>
+            <button onClick={this.moveBackMonth}> B </button>
+            <span>{this.month(leftCalendarMoment)} {this.year(leftCalendarMoment)}</span>
+            <button onClick={this.moveForwardMonth}> F </button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                {this.weekHeader()}
+              </tr>
+            </thead>
+            <tbody>
+              {this.allDates(leftCalendarMoment)}
+            </tbody>
+          </table>
         </div>
-        <table>
-          <thead>
-            <tr>
-              {this.weekHeader()}
-            </tr>
-          </thead>
-          <tbody>
-            {this.allDates()}
-          </tbody>
-        </table>
+        <div className='rightCalendar'>
+          <div>
+            <button onClick={this.moveBackMonth}> B </button>
+            <span>{this.month(rightCalendarMoment)} {this.year(rightCalendarMoment)}</span>
+            <button onClick={this.moveForwardMonth}> F </button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                {this.weekHeader()}
+              </tr>
+            </thead>
+            <tbody>
+              {this.allDates(rightCalendarMoment)}
+            </tbody>
+          </table>
+        </div>
       </div>
+
     );
   }
 }
