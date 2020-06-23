@@ -79,11 +79,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getRoomData();
+    const roomId = window.location.pathname.split('/')[3];
+    this.getRoomData(roomId);
   }
 
-  getRoomData() {
-    axios.get('/api/rooms/2')
+  getRoomData(id) {
+    axios.get(`/api/rooms/${id}`)
       .then((results) => {
         const reservations = results.data.slice(1);
         this.setState({
