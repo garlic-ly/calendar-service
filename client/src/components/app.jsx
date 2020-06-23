@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Guest from './guest.jsx';
+import CheckInOut from './checkInOut.jsx';
+import Calendar from './calendar.jsx';
 
 // Styled-Components
 const StyledWrapper = styled.div`
@@ -37,6 +39,7 @@ const CalendarDiv = styled.div`
   clear: both;
   padding: 10%;
   padding-top: 0%;
+  padding-bottom: 0%;
 `;
 const GuestsDiv = styled.div`
   clear: both;
@@ -72,24 +75,29 @@ class App extends React.Component {
       nightlyRate: 0,
       averageRating: 0,
       totalRatings: 0,
+      checkin: 'Add date',
+      checkout: 'Add date',
+      calendarOpen: false,
     };
     this.getRoomData = this.getRoomData.bind(this);
     this.guestMenuToggle = this.guestMenuToggle.bind(this);
+    this.calendarToggle = this.calendarToggle.bind(this);
     this.updateGuestCount = this.updateGuestCount.bind(this);
+    this.calendarCheck = this.calendarCheck.bind(this);
   }
 
   componentDidMount() {
-    this.getRoomData();
+    const roomId = window.location.pathname.split('/')[3];
+    this.getRoomData(roomId);
   }
 
-  getRoomData() {
-    axios.get('/api/rooms/2')
+  getRoomData(id) {
+    axios.get(`/api/rooms/${id}`)
       .then((results) => {
         const reservations = results.data.slice(1);
         this.setState({
           averageRating: results.data[0].averageRating,
           cleaningFee: results.data[0].cleaningFee,
-          id: results.data[0].id,
           nightlyRate: results.data[0].nightlyRate,
           totalRatings: results.data[0].totalRatings,
           bookedNights: reservations,
@@ -100,6 +108,12 @@ class App extends React.Component {
   guestMenuToggle() {
     this.setState({
       isGuestDropdownOpen: !this.state.isGuestDropdownOpen,
+    });
+  }
+
+  calendarToggle() {
+    this.setState({
+      calendarOpen: !this.state.calendarOpen,
     });
   }
 
@@ -121,6 +135,23 @@ class App extends React.Component {
       [name]: newCount,
       guestCount: newGuestTotal,
     });
+  }
+
+  calendarCheck() {
+    if (this.state.calendarOpen) {
+      return <Calendar />;
+    }
+    const { checkin } = this.state;
+    const { checkout } = this.state;
+    const { calendarOpen } = this.state;
+    return (
+      <CheckInOut
+        checkin={checkin}
+        checkout={checkout}
+        calendarOpen={calendarOpen}
+        calendarToggle={this.calendarToggle}
+      />
+    );
   }
 
   /*
@@ -155,7 +186,7 @@ class App extends React.Component {
           </ReviewAvgSpan>
         </ReviewsDiv>
         <CalendarDiv>
-          Calendar Place Holder
+          {this.calendarCheck()}
         </CalendarDiv>
         <GuestsDiv>
           <Guest
@@ -171,6 +202,9 @@ class App extends React.Component {
         <ButtonDiv>
           <Button style={{ background: 'linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)' }}>Reserve</Button>
         </ButtonDiv>
+        <div>
+          <Calendar />
+        </div>
       </StyledWrapper>
     );
   }

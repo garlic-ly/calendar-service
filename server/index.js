@@ -4,7 +4,7 @@ const db = require('../db/index.js');
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, '/../client/dist')));
+app.use('/api/room/:roomId', express.static(path.join(__dirname, '/../client/dist')));
 
 // GET Route
 app.get('/api/rooms/:roomId', (req, res) => {

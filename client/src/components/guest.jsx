@@ -7,6 +7,7 @@ const GuestWrapper = styled.div`
   border-bottom-right-radius: 12px;
   border-bottom-left-radius: 12px;
   border: 1px solid grey;
+  padding-top:0%;
 `;
 const GuestSpan = styled.span`
   padding-left: 10%;
