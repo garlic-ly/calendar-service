@@ -1,30 +1,28 @@
 const express = require('express');
-const app = express();
+const path = require('path');
 const db = require('../db/index.js');
-const port = 3001;
 
+const app = express();
 
-app.use(express.static(__dirname + '/../client/dist'));
+app.use(express.static(path.join(__dirname, '/../client/dist')));
 
 // GET Route
 app.get('/api/rooms/:roomId', (req, res) => {
-  let roomId = req.params.roomId;
-  let roomQuery = 'SELECT * FROM rooms WHERE id = ?';
-  db.connection.query(roomQuery, [roomId], (error, roomResults, fields) => {
-    if (error) {
-      res.status(404).send(error);
+  const { roomId } = req.params;
+  const roomQuery = 'SELECT * FROM rooms WHERE id = ?';
+  db.connection.query(roomQuery, [roomId], (roomError, roomResults) => {
+    if (roomError) {
+      res.status(404).send(roomError);
     }
-    let resQuery = 'SELECT resId, startDate, endDate FROM reservations WHERE roomId = ?'
-    db.connection.query(resQuery, [roomId], (error, resResults, fields) => {
-      if (error) {
-        res.status(404).send(error);
+    const resQuery = 'SELECT resId, startDate, endDate FROM reservations WHERE roomId = ?';
+    db.connection.query(resQuery, [roomId], (resError, resResults) => {
+      if (resError) {
+        res.status(404).send(resError);
       }
-      let results = roomResults.concat(resResults);
+      const results = roomResults.concat(resResults);
       res.status(200).send(results);
     });
   });
 });
 
-app.listen(port, () => {
-  console.log(`Now listening on port ${port}`);
-});
+module.exports = app;
