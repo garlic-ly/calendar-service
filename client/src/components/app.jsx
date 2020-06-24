@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import moment from 'moment';
 import styled from 'styled-components';
 import Guest from './guest.jsx';
 import CheckInOut from './checkInOut.jsx';
@@ -69,9 +70,10 @@ class App extends React.Component {
       isGuestDropdownOpen: false,
       childrenCount: 0,
       infants: 0,
-      roomTotal: 0,
-      roomPlusCleaning: 0,
+      roomOnlyTotal: 0,
+      total: 0,
       taxes: 0,
+      totalDays: 0,
       nightlyRate: 0,
       averageRating: 0,
       totalRatings: 0,
@@ -86,6 +88,8 @@ class App extends React.Component {
     this.updateGuestCount = this.updateGuestCount.bind(this);
     this.calendarCheck = this.calendarCheck.bind(this);
     this.updateDates = this.updateDates.bind(this);
+    this.balanceDue = this.balanceDue.bind(this);
+    this.calculateTotals = this.calculateTotals.bind(this);
   }
 
   componentDidMount() {
@@ -165,16 +169,52 @@ class App extends React.Component {
       this.setState({
         checkout: newDate,
       });
+      setTimeout(() => this.calculateTotals(), 0);
     }
   }
 
-  /*
-    Conditional Render - If checkout data and checkin data are not null
-    <span>Amount x Number of Nights Nights</span> <span>RoomTotal</span>
-    <span>Cleaning Fee</span> <span>cleaningFee</span>
-    <span>Taxes</span> <span>RoomtTotal + cleaningFee * (0.08)</span>
-    <span>Total</span> <span>totalAmount</span>
-  */
+  balanceDue() {
+    const { checkin, checkout, balanceCalculated } = this.state;
+    if (checkin !== 'Add date' && checkout !== 'Add date') {
+      const { nightlyRate, totalDays, roomOnlyTotal, cleaningFee, taxes, total } = this.state;
+      return (
+      <div>
+          <div style={{display: 'flex'}, {justifyContent: 'space-between'}}>
+            <span>{nightlyRate} x {totalDays} Nights</span> <span>{roomOnlyTotal}</span>
+          </div>
+          <div style={{display: 'flex'}, {justifyContent: 'space-between'}}>
+            <span>Cleaning Fee</span> <span>{cleaningFee}</span>
+          </div>
+          <div style={{display: 'flex'}, {justifyContent: 'space-between'}}>
+            <span>Taxes</span> <span>{taxes}</span>
+          </div>
+          <hr></hr>
+          <div style={{display: 'flex'}, {justifyContent: 'space-between'}}>
+            <span>Total</span> <span>{total}</span>
+          </div>
+        </div>
+      );
+    }
+    return;
+  }
+
+  calculateTotals() {
+    const { checkin, checkout } = this.state;
+    const { nightlyRate, cleaningFee} = this.state;
+    const inDate = moment(checkin);
+    const outDate = moment(checkout);
+    const newTotalDays = Math.abs(inDate.diff(outDate, 'days'));
+    console.log('Here ', newTotalDays);
+    const newRoomOnlyTotal = nightlyRate * newTotalDays;
+    const newTaxes = (newRoomOnlyTotal + cleaningFee) * 0.08;
+    const newTotal = newRoomOnlyTotal + cleaningFee + newTaxes;
+    this.setState({
+      totalDays: newTotalDays,
+      roomOnlyTotal: newRoomOnlyTotal,
+      taxes: newTaxes.toFixed(2),
+      total: newTotal,
+    });
+  }
 
   render() {
     const { nightlyRate } = this.state;
@@ -213,6 +253,9 @@ class App extends React.Component {
             infants={infants}
           />
         </GuestsDiv>
+        <div style={{display: 'flex'}, {justifyContent: 'space-between'}}>
+          {this.balanceDue()}
+        </div>
         <ButtonDiv>
           <Button style={{ background: 'linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)' }}>Reserve</Button>
         </ButtonDiv>
