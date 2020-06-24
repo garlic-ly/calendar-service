@@ -25,7 +25,7 @@ const DateDiv = styled.div`
 const CheckInOut = (props) => {
   const { checkin, checkout, calendarToggle } = props;
   return (
-    <CheckWrapper onClick={calendarToggle}>
+    <CheckWrapper className="checkInOut" onClick={calendarToggle}>
       <div>
         <CheckTitleDiv>
           CHECK-IN
