@@ -166,8 +166,10 @@ class App extends React.Component {
         checkin: newDate,
       });
     } else if (id === 2) {
+      const { calendarOpen } = this.state;
       this.setState({
         checkout: newDate,
+        calendarOpen: !calendarOpen
       });
       setTimeout(() => this.calculateTotals(), 0);
     }
