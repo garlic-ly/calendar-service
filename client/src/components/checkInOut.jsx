@@ -1,17 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import styled from 'styled-components';
 
-const CheckWrapper = styled.div`
-  border-top-right-radius: 12px;
-  border-top-left-radius: 12px;
-  border: 1px solid grey;
-  padding-bottom: 0%;
+const CheckInOutWrapper = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
-
 const CheckTitleDiv = styled.div`
   color: black;
   font-weight: 800;
@@ -25,7 +19,7 @@ const DateDiv = styled.div`
 const CheckInOut = (props) => {
   const { checkin, checkout, calendarToggle } = props;
   return (
-    <CheckWrapper className="checkInOut" onClick={calendarToggle}>
+    <CheckInOutWrapper className="checkInOut" onClick={calendarToggle}>
       <div>
         <CheckTitleDiv>
           CHECK-IN
@@ -42,7 +36,7 @@ const CheckInOut = (props) => {
           {checkout}
         </DateDiv>
       </div>
-    </CheckWrapper>
+    </CheckInOutWrapper>
   );
 };
 
