@@ -10,19 +10,18 @@ class Calendar extends React.Component {
       rightCalendarMoment: moment(this.leftCalendarMoment).add(1, 'M'),
       weekdays: moment.weekdaysMin(),
       months: moment.months(),
+      clickCount: 1,
     };
-    this.month = this.month.bind(this);
     this.weekHeader = this.weekHeader.bind(this);
     this.allDates = this.allDates.bind(this);
     this.blankDates = this.blankDates.bind(this);
     this.monthDates = this.monthDates.bind(this);
-    this.today = this.today.bind(this);
-    this.year = this.year.bind(this);
-    this.daysInMonth = this.daysInMonth.bind(this);
-    this.monthStart = this.monthStart.bind(this);
     this.monthArray = this.monthArray.bind(this);
     this.moveForwardMonth = this.moveForwardMonth.bind(this);
     this.moveBackMonth = this.moveBackMonth.bind(this);
+    this.selectDate = this.selectDate.bind(this);
+    this.isBooked = this.isBooked.bind(this);
+    this.createDate = this.createDate.bind(this);
   }
 
   // Get Month, Date, Year, Num of Days per month, etc
@@ -91,23 +90,83 @@ class Calendar extends React.Component {
     const month = this.monthArray(calMoment);
     return month.map((singleWeek, weekIndex) => (
       <tr key={weekIndex}>
-        {singleWeek.map((oneDay, dayIndex) => <td key={dayIndex}>{oneDay}</td>)}
+        {singleWeek.map((oneDay, dayIndex) => {
+          if (this.isBooked(oneDay, calMoment)) {
+            return <td style={{ backgroundColor: 'red' }} onClick={(e) => this.selectDate(e, calMoment)} key={dayIndex}>{oneDay}</td>;
+          }
+          return <td onClick={(e) => this.selectDate(e, calMoment)} key={dayIndex}>{oneDay}</td>;
+        })}
       </tr>
     ));
   }
 
+  // onClick Handlers to Address Month Movement
   moveForwardMonth() {
+    const { leftCalendarMoment, rightCalendarMoment } = this.state;
     this.setState({
-      leftCalendarMoment: this.state.leftCalendarMoment.add(1, 'M'),
-      rightCalendarMoment: this.state.rightCalendarMoment.add(1, 'M'),
+      leftCalendarMoment: leftCalendarMoment.add(1, 'M'),
+      rightCalendarMoment: rightCalendarMoment.add(1, 'M'),
     });
   }
 
   moveBackMonth() {
+    const { leftCalendarMoment, rightCalendarMoment } = this.state;
     this.setState({
-      leftCalendarMoment: this.state.leftCalendarMoment.subtract(1, 'M'),
-      rightCalendarMoment: this.state.rightCalendarMoment.subtract(1, 'M'),
+      leftCalendarMoment: leftCalendarMoment.subtract(1, 'M'),
+      rightCalendarMoment: rightCalendarMoment.subtract(1, 'M'),
     });
+  }
+
+  isBooked(date, calMoment) {
+    // Compose Date
+    let fullDate = this.createDate(date, calMoment);
+    // Check against reservations
+    const { bookedNights } = this.props;
+    for (let i = 0; i < bookedNights.length; i += 1) {
+      const bookedNight = bookedNights[i];
+      const format = 'MM/DD/YYYY';
+      fullDate = moment(fullDate);
+      const startDate = moment(bookedNight.startDate).format(format);
+      const endDate = moment(bookedNight.endDate).format(format);
+      if (fullDate.isBetween(startDate, endDate, undefined, '[)')) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  createDate(date, calMoment) {
+    if (date < 10) {
+      date = '0' + date;
+    }
+    let currentMonth = this.month(calMoment);
+    const { months } = this.state;
+    currentMonth = months.indexOf(currentMonth) + 1;
+    if (currentMonth < 10) {
+      currentMonth = '0' + currentMonth;
+    }
+    const year = this.year(calMoment);
+    let fullDate = `${currentMonth}/${date}/${year}`;
+    return fullDate;
+  }
+
+  // onClick Handlers to Address Day Clicks
+  selectDate(e, calMoment) {
+    // Creates formatted date for display
+    const { clickCount } = this.state;
+    let fullDate = this.createDate(e.target.innerHTML, calMoment);
+    if (e.target.innerHTML !== ' ') {
+      if (!this.isBooked(e.target.innerHTML, calMoment) && clickCount < 3) {
+        console.log('Currently not booked!');
+        e.target.style.backgroundColor = 'black';
+        e.target.style.color = 'white';
+        e.target.style.borderRadius = '50%';
+        this.props.updateDates(clickCount, fullDate);
+        this.setState({
+          clickCount: clickCount + 1,
+        })
+      }
+    }
   }
 
   render() {
@@ -131,7 +190,7 @@ class Calendar extends React.Component {
             </tbody>
           </table>
         </div>
-        <div className='rightCalendar'>
+        <div className="rightCalendar">
           <div>
             <button onClick={this.moveBackMonth}> B </button>
             <span>{this.month(rightCalendarMoment)} {this.year(rightCalendarMoment)}</span>
@@ -149,7 +208,6 @@ class Calendar extends React.Component {
           </table>
         </div>
       </div>
-
     );
   }
 }
