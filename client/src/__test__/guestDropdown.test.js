@@ -19,7 +19,7 @@ describe('Tests for Guest Dropdown Component', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  test('Tests click event', () => {
+  test('Tests that click event changes adult guest count', () => {
     const mockCallBack = jest.fn(() => {
       options.adults = options.adults + 1;
     });

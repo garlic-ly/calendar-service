@@ -22,9 +22,11 @@ describe('Tests for Guest Component', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  test('Tests click event', () => {
-    const mockCallBack = jest.fn();
-    const options = {
+  test('Tests that click event toggles dropdownOpen', () => {
+    const mockCallBack = jest.fn(() => {
+      options.dropdownOpen = !options.dropdownOpen;
+    });
+    let options = {
       dropdownOpen: false,
       guestMenuToggle: mockCallBack,
       guestCount: 1,
@@ -36,5 +38,6 @@ describe('Tests for Guest Component', () => {
     const guest = shallow((<Guest {...options}/>));
     guest.find('.guest').simulate('click');
     expect(mockCallBack.mock.calls.length).toEqual(1);
+    expect(options.dropdownOpen).toBe(true);
   });
 });

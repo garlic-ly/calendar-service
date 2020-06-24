@@ -2,8 +2,8 @@ const app = require('../../../server/index');
 const supertest = require('supertest');
 const regeneratorRuntime = require('regenerator-runtime');
 
-describe("Test the root path", () => {
-  test("It should response the GET method", done => {
+describe("Test the /api/rooms/:roomId path", () => {
+  test("It should show the correct response for a call to roomId 1", done => {
     return supertest(app)
       .get("/api/rooms/1")
       .then(response => {
