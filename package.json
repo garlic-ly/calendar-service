@@ -12,7 +12,7 @@
   },
   "scripts": {
     "seed": "node ./db/seed.js",
-    "start": "nodemon ./server/index.js",
+    "start": "nodemon ./server/app.js",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:exitIssue": "jest --runInBand --detectOpenHandles",

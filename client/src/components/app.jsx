@@ -78,12 +78,14 @@ class App extends React.Component {
       checkin: 'Add date',
       checkout: 'Add date',
       calendarOpen: false,
+      bookedNights: [],
     };
     this.getRoomData = this.getRoomData.bind(this);
     this.guestMenuToggle = this.guestMenuToggle.bind(this);
     this.calendarToggle = this.calendarToggle.bind(this);
     this.updateGuestCount = this.updateGuestCount.bind(this);
     this.calendarCheck = this.calendarCheck.bind(this);
+    this.updateDates = this.updateDates.bind(this);
   }
 
   componentDidMount() {
@@ -154,6 +156,18 @@ class App extends React.Component {
     );
   }
 
+  updateDates(id, newDate) {
+    if (id === 1) {
+      this.setState({
+        checkin: newDate,
+      });
+    } else if (id === 2) {
+      this.setState({
+        checkout: newDate,
+      });
+    }
+  }
+
   /*
     Conditional Render - If checkout data and checkin data are not null
     <span>Amount x Number of Nights Nights</span> <span>RoomTotal</span>
@@ -203,7 +217,7 @@ class App extends React.Component {
           <Button style={{ background: 'linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)' }}>Reserve</Button>
         </ButtonDiv>
         <div>
-          <Calendar />
+          <Calendar bookedNights={this.state.bookedNights} updateDates={this.updateDates}/>
         </div>
       </StyledWrapper>
     );
