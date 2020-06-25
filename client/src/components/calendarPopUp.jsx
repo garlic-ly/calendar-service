@@ -9,23 +9,50 @@ const StyledWrapper = styled.div`
   border: none;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
   border-radius: 12px;
+  height: auto;
+  width: auto;
+`;
+
+const SelectDateWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  padding-top: 2.5%;
+`;
+const DatePickerWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  justify-content: space-around;
+  width: 30%;
+  border: 1px solid grey;
+  border-radius: 12px;
+`;
+const CheckInWrapper = styled.div`
+  float: left;
+`;
+const CheckOutWrapper = styled.div`
+  float: right;
+`;
+const SelectTextDiv = styled.div`
+  font-color: black;
+  font-size: 22px;
+  width: 50%;
 `;
 
 const CalendarPopUp = (props) => {
   const { bookedNights, checkin, checkout, calendarToggle, updateDates, clickCount } = props;
   return (
     <StyledWrapper>
-      <div style={{ display: 'flex' }, { justifyContent: 'space-between' }, { alignItems: 'flex-start' }}>
-        <div style={{ display: 'block' }}>Select dates</div>
-        <div style={{ display: 'block' }}>
-          <div>
+      <SelectDateWrapper>
+        <SelectTextDiv>Select dates</SelectTextDiv>
+        <DatePickerWrapper>
+          <CheckInWrapper>
             <CheckIn checkin={checkin} calendarToggle={calendarToggle}/>
-          </div>
-          <div>
+          </CheckInWrapper>
+          <CheckOutWrapper>
             <CheckOut checkout={checkout} calendarToggle={calendarToggle}/>
-          </div>
-        </div>
-      </div>
+          </CheckOutWrapper>
+        </DatePickerWrapper>
+      </SelectDateWrapper>
       <div>
         <Calendar
           bookedNights={bookedNights}

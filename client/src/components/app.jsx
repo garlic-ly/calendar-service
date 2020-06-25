@@ -12,6 +12,8 @@ const StyledWrapper = styled.div`
   border: none;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
   border-radius: 12px;
+  height: auto;
+  width: 30%;
 `;
 // width: 300;
 // height: 300;
@@ -274,12 +276,7 @@ class App extends React.Component {
           <NightSpan> / Night</NightSpan>
         </PriceDiv>
         <ReviewsDiv>
-          <ReviewAvgSpan>
-            {averageRating}
-            (
-            {totalRatings}
-            )
-          </ReviewAvgSpan>
+          <ReviewAvgSpan> {averageRating}  ({totalRatings}) </ReviewAvgSpan>
         </ReviewsDiv>
         {this.calendarCheck()}
         <GuestsDiv>

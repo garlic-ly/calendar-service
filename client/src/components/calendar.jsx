@@ -1,14 +1,14 @@
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
+import LeftArrowSVG from './icons/leftArrowSVG.jsx';
+import RightArrowSVG from './icons/rightArrowSVG.jsx';
 
 const LeftCalendarDiv = styled.div`
-  width: 50%;
   float: left;
 `;
 
 const RightCalendarDiv = styled.div`
-  width: 50%;
   float: right;
 `;
 
@@ -32,7 +32,6 @@ const AvailableTD = styled.td`
   border-radius: 50%;
   &:hover {
     border: 1px solid black;
-    background: white;
   }
 `;
 
@@ -57,7 +56,6 @@ const PartOfResTD = styled.td`
 
 const MonthSwitchButton = styled.button`
   border-radius: 50%;
-  background: white;
   border: none;
   &:hover {
     background: #f7f7f7
@@ -276,7 +274,7 @@ class Calendar extends React.Component {
       <div>
         <LeftCalendarDiv className="leftCalendar">
           <div>
-            <MonthSwitchButton onClick={this.moveBackMonth}> B </MonthSwitchButton>
+            <MonthSwitchButton onClick={this.moveBackMonth}> <LeftArrowSVG /> </MonthSwitchButton>
             <span>{this.month(leftCalendarMoment)} {this.year(leftCalendarMoment)}</span>
           </div>
           <table>
@@ -293,7 +291,7 @@ class Calendar extends React.Component {
         <RightCalendarDiv className="rightCalendar">
           <div>
             <span>{this.month(rightCalendarMoment)} {this.year(rightCalendarMoment)}</span>
-            <MonthSwitchButton onClick={this.moveForwardMonth}> F </MonthSwitchButton>
+            <MonthSwitchButton onClick={this.moveForwardMonth}> <RightArrowSVG /> </MonthSwitchButton>
           </div>
           <table>
             <thead>
