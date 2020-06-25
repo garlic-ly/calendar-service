@@ -9,14 +9,16 @@ const GuestWrapper = styled.div`
   border: 1px solid grey;
   padding-top:0%;
 `;
-const GuestSpan = styled.span`
+const GuestDiv = styled.div`
   padding-left: 10%;
+  padding-top: 5%;
   color: black;
   font-weight: 800;
   font-size: 10px;
 `;
 const GuestCountDiv = styled.div`
   padding-left: 10%;
+  padding-bottom: 5%;
   font-size: 14px;
 `;
 
@@ -58,7 +60,7 @@ const Guest = (props) => {
   return (
     <div>
       <GuestWrapper className="guest" onClick={guestMenuToggle}>
-        <GuestSpan>GUESTS</GuestSpan>
+        <GuestDiv>GUESTS</GuestDiv>
         <GuestCountDiv>{numberOfGuests()}</GuestCountDiv>
       </GuestWrapper>
       <div>

@@ -5,9 +5,11 @@ const CheckTitleDiv = styled.div`
   color: black;
   font-weight: 800;
   font-size: 10px;
+  padding-top: 15%;
 `;
 const DateDiv = styled.div`
   font-size: 14px;
+  padding-bottom: 15%;
 `;
 
 const CheckOut = (props) => {
