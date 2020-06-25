@@ -1,8 +1,8 @@
-DROP DATABASE airbnb;
+DROP DATABASE garlicly;
 
-CREATE DATABASE airbnb;
+CREATE DATABASE garlicly;
 
-USE airbnb;
+USE garlicly;
 
 CREATE TABLE rooms (
   id INTEGER AUTO_INCREMENT PRIMARY KEY,
