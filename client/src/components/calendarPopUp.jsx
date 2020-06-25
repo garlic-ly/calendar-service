@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import CheckInOut from './checkInOut.jsx';
+import CheckOut from './checkOut.jsx';
+import CheckIn from './checkIn.jsx';
 import Calendar from './calendar.jsx';
 
 const StyledWrapper = styled.div`
@@ -17,11 +18,12 @@ const CalendarPopUp = (props) => {
       <div style={{ display: 'flex' }, { justifyContent: 'space-between' }, { alignItems: 'flex-start' }}>
         <div style={{ display: 'block' }}>Select dates</div>
         <div style={{ display: 'block' }}>
-          <CheckInOut
-            checkin={checkin}
-            checkout={checkout}
-            calendarToggle={calendarToggle}
-          />
+          <div>
+            <CheckIn checkin={checkin} calendarToggle={calendarToggle}/>
+          </div>
+          <div>
+            <CheckOut checkout={checkout} calendarToggle={calendarToggle}/>
+          </div>
         </div>
       </div>
       <div>

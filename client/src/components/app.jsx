@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import styled from 'styled-components';
 import Guest from './guest.jsx';
-import CheckInOut from './checkInOut.jsx';
+import DatePicker from './datePicker.jsx';
 import CalendarPopUp from './calendarPopUp.jsx';
 
 // Styled-Components
@@ -174,7 +174,7 @@ class App extends React.Component {
     return (
       <CalendarDiv>
         <CheckWrapper>
-          <CheckInOut
+          <DatePicker
             checkin={checkin}
             checkout={checkout}
             calendarToggle={this.calendarToggle}
