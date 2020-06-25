@@ -40,7 +40,7 @@ const GuestDropdown = (props) => {
       <TypeDiv>
         <NameDiv>Children</NameDiv>
         <GuestAdderDiv>
-          <Button onClick={(e) => props.updateGuestCount(e)} name="childrenCount">-</Button>
+          <Button onClick={(e) => props.updateGuestCount(e)} className="children-minus" name="childrenCount">-</Button>
           <span>{childrenCount}</span>
           <Button onClick={(e) => props.updateGuestCount(e)} name="childrenCount">+</Button>
         </GuestAdderDiv>

@@ -19,7 +19,7 @@ describe('Tests for Guest Dropdown Component', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  test('Tests that click event changes adult guest count', () => {
+  test('Tests that click event increments adults count', () => {
     const mockCallBack = jest.fn(() => {
       options.adults = options.adults + 1;
     });
@@ -34,5 +34,22 @@ describe('Tests for Guest Dropdown Component', () => {
     guest.find('.adults-add').simulate('click');
     expect(mockCallBack.mock.calls.length).toEqual(1);
     expect(options.adults).toBe(2);
+  });
+
+  test('Tests that click event decrements childrenCount', () => {
+    const mockCallBack = jest.fn(() => {
+      options.childrenCount = options.childrenCount - 1;
+    });
+    const options = {
+      updateGuestCount: mockCallBack,
+      adults: 1,
+      childrenCount: 1,
+      infants: 0,
+    }
+    const guest = shallow((<GuestDropdown {...options}/>));
+    expect(options.childrenCount).toBe(1);
+    guest.find('.children-minus').simulate('click');
+    expect(mockCallBack.mock.calls.length).toEqual(1);
+    expect(options.childrenCount).toBe(0);
   });
 });
