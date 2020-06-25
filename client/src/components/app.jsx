@@ -3,8 +3,8 @@ import axios from 'axios';
 import moment from 'moment';
 import styled from 'styled-components';
 import Guest from './guest.jsx';
-import CheckInOut from './checkInOut.jsx';
-import Calendar from './calendar.jsx';
+import DatePicker from './datePicker.jsx';
+import CalendarPopUp from './calendarPopUp.jsx';
 
 // Styled-Components
 const StyledWrapper = styled.div`
@@ -12,9 +12,9 @@ const StyledWrapper = styled.div`
   border: none;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
   border-radius: 12px;
-  width: 300px;
-  height: 300px;
 `;
+// width: 300;
+// height: 300;
 const DollarAmtSpan = styled.span`
   font-size: 22px;
   font-weight: bold;
@@ -40,6 +40,12 @@ const CalendarDiv = styled.div`
   clear: both;
   padding: 10%;
   padding-top: 0%;
+  padding-bottom: 0%;
+`;
+const CheckWrapper = styled.div`
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border: 1px solid grey;
   padding-bottom: 0%;
 `;
 const GuestsDiv = styled.div`
@@ -81,6 +87,7 @@ class App extends React.Component {
       checkout: 'Add date',
       calendarOpen: false,
       bookedNights: [],
+      clickCount: 1,
     };
     this.getRoomData = this.getRoomData.bind(this);
     this.guestMenuToggle = this.guestMenuToggle.bind(this);
@@ -112,30 +119,33 @@ class App extends React.Component {
   }
 
   guestMenuToggle() {
+    const { isGuestDropdownOpen } = this.state;
     this.setState({
-      isGuestDropdownOpen: !this.state.isGuestDropdownOpen,
+      isGuestDropdownOpen: !isGuestDropdownOpen,
     });
   }
 
   calendarToggle() {
+    const { calendarOpen } = this.state;
     this.setState({
-      calendarOpen: !this.state.calendarOpen,
+      calendarOpen: !calendarOpen,
     });
   }
 
   updateGuestCount(e) {
     const { name } = e.target;
+    const { guestCount } = this.state;
     let newCount;
     let newGuestTotal;
     if (e.target.innerHTML === '+') {
       newCount = this.state[name] + 1;
-      newGuestTotal = this.state.guestCount + 1;
+      newGuestTotal = guestCount + 1;
     } else {
       if (this.state[name] === 0) {
         return;
       }
       newCount = this.state[name] - 1;
-      newGuestTotal = this.state.guestCount - 1;
+      newGuestTotal = guestCount - 1;
     }
     this.setState({
       [name]: newCount,
@@ -144,69 +154,85 @@ class App extends React.Component {
   }
 
   calendarCheck() {
-    if (this.state.calendarOpen) {
-      return <Calendar />;
-    }
-    const { checkin } = this.state;
-    const { checkout } = this.state;
     const { calendarOpen } = this.state;
+    if (calendarOpen) {
+      const { bookedNights, checkin, checkout, clickCount } = this.state;
+      return (
+        <CalendarDiv>
+          <CalendarPopUp
+            bookedNights={bookedNights}
+            checkin={checkin}
+            checkout={checkout}
+            clickCount={clickCount}
+            calendarToggle={this.calendarToggle}
+            updateDates={this.updateDates}
+          />
+        </CalendarDiv>
+      );
+    }
+    const { checkin, checkout } = this.state;
     return (
-      <CheckInOut
-        checkin={checkin}
-        checkout={checkout}
-        calendarOpen={calendarOpen}
-        calendarToggle={this.calendarToggle}
-      />
+      <CalendarDiv>
+        <CheckWrapper>
+          <DatePicker
+            checkin={checkin}
+            checkout={checkout}
+            calendarToggle={this.calendarToggle}
+          />
+        </CheckWrapper>
+      </CalendarDiv>
     );
   }
 
-  updateDates(id, newDate) {
-    if (id === 1) {
+  updateDates(newDate) {
+    const { clickCount } = this.state;
+    const newClickCount = clickCount + 1;
+    if (clickCount === 1) {
       this.setState({
         checkin: newDate,
+        clickCount: newClickCount,
       });
-    } else if (id === 2) {
+    } else if (clickCount === 2) {
       const { calendarOpen } = this.state;
       this.setState({
         checkout: newDate,
-        calendarOpen: !calendarOpen
+        calendarOpen: !calendarOpen,
+        clickCount: newClickCount,
       });
       setTimeout(() => this.calculateTotals(), 0);
     }
   }
 
   balanceDue() {
-    const { checkin, checkout, balanceCalculated } = this.state;
+    const { checkin, checkout } = this.state;
     if (checkin !== 'Add date' && checkout !== 'Add date') {
       const { nightlyRate, totalDays, roomOnlyTotal, cleaningFee, taxes, total } = this.state;
       return (
-      <div>
-          <div style={{display: 'flex'}, {justifyContent: 'space-between'}}>
+        <div>
+          <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
             <span>{nightlyRate} x {totalDays} Nights</span> <span>{roomOnlyTotal}</span>
           </div>
-          <div style={{display: 'flex'}, {justifyContent: 'space-between'}}>
+          <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
             <span>Cleaning Fee</span> <span>{cleaningFee}</span>
           </div>
-          <div style={{display: 'flex'}, {justifyContent: 'space-between'}}>
+          <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
             <span>Taxes</span> <span>{taxes}</span>
           </div>
-          <hr></hr>
-          <div style={{display: 'flex'}, {justifyContent: 'space-between'}}>
+          <hr />
+          <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
             <span>Total</span> <span>{total}</span>
           </div>
         </div>
       );
     }
-    return;
   }
 
   calculateTotals() {
     const { checkin, checkout } = this.state;
-    const { nightlyRate, cleaningFee} = this.state;
+    const { nightlyRate, cleaningFee } = this.state;
     const inDate = moment(checkin);
     const outDate = moment(checkout);
     const newTotalDays = Math.abs(inDate.diff(outDate, 'days'));
-    console.log('Here ', newTotalDays);
     const newRoomOnlyTotal = nightlyRate * newTotalDays;
     const newTaxes = (newRoomOnlyTotal + cleaningFee) * 0.08;
     const newTotal = newRoomOnlyTotal + cleaningFee + newTaxes;
@@ -241,9 +267,7 @@ class App extends React.Component {
             )
           </ReviewAvgSpan>
         </ReviewsDiv>
-        <CalendarDiv>
-          {this.calendarCheck()}
-        </CalendarDiv>
+        {this.calendarCheck()}
         <GuestsDiv>
           <Guest
             dropdownOpen={isGuestDropdownOpen}
@@ -255,18 +279,19 @@ class App extends React.Component {
             infants={infants}
           />
         </GuestsDiv>
-        <div style={{display: 'flex'}, {justifyContent: 'space-between'}}>
+        <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
           {this.balanceDue()}
         </div>
         <ButtonDiv>
           <Button style={{ background: 'linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)' }}>Reserve</Button>
         </ButtonDiv>
-        <div>
-          <Calendar bookedNights={this.state.bookedNights} updateDates={this.updateDates}/>
-        </div>
       </StyledWrapper>
     );
   }
 }
 
 export default App;
+
+/* <div>
+<Calendar bookedNights={this.state.bookedNights} updateDates={this.updateDates}/>
+</div> */

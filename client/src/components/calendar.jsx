@@ -2,6 +2,68 @@ import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
 
+const LeftCalendarDiv = styled.div`
+  width: 50%;
+  float: left;
+`;
+
+const RightCalendarDiv = styled.div`
+  width: 50%;
+  float: right;
+`;
+
+const WeekdayTD = styled.td`
+  font-size: 14px;
+  color: grey;
+  text-align: center;
+`;
+
+const BookedTD = styled.td`
+  font-size: 14px;
+  text-align: center;
+  color: #b0b0b0;
+  text-decoration: line-through;
+`;
+
+const AvailableTD = styled.td`
+  font-size: 14px;
+  text-align: center;
+  color: black;
+  border-radius: 50%;
+  &:hover {
+    border: 1px solid black;
+    background: white;
+  }
+`;
+
+const ChoosenTD = styled.td`
+  background: black;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+`;
+
+const PartOfResTD = styled.td`
+  font-size: 14px;
+  text-align: center;
+  color: black;
+  background: #f7f7f7;
+  &:hover {
+    border: 1px solid black;
+    background: white;
+    border-radius: 50%;
+  }
+`;
+
+const MonthSwitchButton = styled.button`
+  border-radius: 50%;
+  background: white;
+  border: none;
+  &:hover {
+    background: #f7f7f7
+  }
+`;
+
 class Calendar extends React.Component {
   constructor(props) {
     super(props);
@@ -10,7 +72,6 @@ class Calendar extends React.Component {
       rightCalendarMoment: moment(this.leftCalendarMoment).add(1, 'M'),
       weekdays: moment.weekdaysMin(),
       months: moment.months(),
-      clickCount: 1,
     };
     this.weekHeader = this.weekHeader.bind(this);
     this.allDates = this.allDates.bind(this);
@@ -83,18 +144,31 @@ class Calendar extends React.Component {
   // Render Functions
   weekHeader() {
     const { weekdays } = this.state;
-    return weekdays.map((weekday) => <td key={weekday}>{weekday}</td>);
+    return weekdays.map((weekday) => <WeekdayTD key={weekday}>{weekday}</WeekdayTD>);
   }
 
   allDates(calMoment) {
     const month = this.monthArray(calMoment);
+    const { checkin, checkout } = this.props;
     return month.map((singleWeek, weekIndex) => (
       <tr key={weekIndex}>
         {singleWeek.map((oneDay, dayIndex) => {
           if (this.isBooked(oneDay, calMoment)) {
-            return <td style={{ backgroundColor: 'red' }} onClick={(e) => this.selectDate(e, calMoment)} key={dayIndex}>{oneDay}</td>;
+            return (
+              <BookedTD onClick={(e) => this.selectDate(e, calMoment)} key={dayIndex}>
+                {oneDay}
+              </BookedTD>
+            );
+          } else if (this.createDate(oneDay, calMoment) === checkin || this.createDate(oneDay, calMoment) === checkout) {
+            return <ChoosenTD key={dayIndex}>{oneDay}</ChoosenTD>;
+          } else if (this.partOfRes(oneDay, calMoment)) {
+            return <PartOfResTD key={dayIndex}>{oneDay}</PartOfResTD>;
           }
-          return <td onClick={(e) => this.selectDate(e, calMoment)} key={dayIndex}>{oneDay}</td>;
+          return (
+            <AvailableTD onClick={(e) => this.selectDate(e, calMoment)} key={dayIndex}>
+              {oneDay}
+            </AvailableTD>
+          );
         })}
       </tr>
     ));
@@ -128,7 +202,23 @@ class Calendar extends React.Component {
       fullDate = moment(fullDate);
       const startDate = moment(bookedNight.startDate).format(format);
       const endDate = moment(bookedNight.endDate).format(format);
-      if (fullDate.isBetween(startDate, endDate, undefined, '[)')) {
+      if (fullDate.isBetween(startDate, endDate, undefined, '[)') || fullDate.isBefore(moment())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  partOfRes(date, calMoment) {
+    let fullDate = this.createDate(date, calMoment);
+    // Check against reservations
+    let { checkin, checkout } = this.props;
+    if (checkin !== 'Add date' && checkout !== 'Add date') {
+      const format = 'MM/DD/YYYY';
+      fullDate = moment(fullDate);
+      checkin = moment(checkin).format(format);
+      checkout = moment(checkout).format(format);
+      if (fullDate.isBetween(checkin, checkout)) {
         return true;
       }
     }
@@ -146,25 +236,36 @@ class Calendar extends React.Component {
       currentMonth = '0' + currentMonth;
     }
     const year = this.year(calMoment);
-    let fullDate = `${currentMonth}/${date}/${year}`;
+    const fullDate = `${currentMonth}/${date}/${year}`;
     return fullDate;
+  }
+
+  resDatesContinuous(fullDate) {
+    const { bookedNights } = this.props;
+    const { checkin } = this.props;
+    for (let i = 0; i < bookedNights.length; i += 1) {
+      const bookedNight = bookedNights[i];
+      const startDate = moment(bookedNight.startDate);
+      if (startDate.isBetween(checkin, fullDate)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   // onClick Handlers to Address Day Clicks
   selectDate(e, calMoment) {
     // Creates formatted date for display
-    const { clickCount } = this.state;
-    let fullDate = this.createDate(e.target.innerHTML, calMoment);
+    const { clickCount, updateDates } = this.props;
+    const fullDate = this.createDate(e.target.innerHTML, calMoment);
     if (e.target.innerHTML !== ' ') {
-      if (!this.isBooked(e.target.innerHTML, calMoment) && clickCount < 3) {
+      if (!this.isBooked(e.target.innerHTML, calMoment) && clickCount === 1) {
         console.log('Currently not booked!');
-        e.target.style.backgroundColor = 'black';
-        e.target.style.color = 'white';
-        e.target.style.borderRadius = '50%';
-        this.props.updateDates(clickCount, fullDate);
-        this.setState({
-          clickCount: clickCount + 1,
-        })
+        updateDates(fullDate);
+      } else if (!this.isBooked(e.target.innerHTML, calMoment) && clickCount === 2) {
+        if (this.resDatesContinuous(fullDate)) {
+          updateDates(fullDate);
+        }
       }
     }
   }
@@ -173,11 +274,10 @@ class Calendar extends React.Component {
     const { leftCalendarMoment, rightCalendarMoment } = this.state;
     return (
       <div>
-        <div className='leftCalendar'>
+        <LeftCalendarDiv className="leftCalendar">
           <div>
-            <button onClick={this.moveBackMonth}> B </button>
+            <MonthSwitchButton onClick={this.moveBackMonth}> B </MonthSwitchButton>
             <span>{this.month(leftCalendarMoment)} {this.year(leftCalendarMoment)}</span>
-            <button onClick={this.moveForwardMonth}> F </button>
           </div>
           <table>
             <thead>
@@ -189,12 +289,11 @@ class Calendar extends React.Component {
               {this.allDates(leftCalendarMoment)}
             </tbody>
           </table>
-        </div>
-        <div className="rightCalendar">
+        </LeftCalendarDiv>
+        <RightCalendarDiv className="rightCalendar">
           <div>
-            <button onClick={this.moveBackMonth}> B </button>
             <span>{this.month(rightCalendarMoment)} {this.year(rightCalendarMoment)}</span>
-            <button onClick={this.moveForwardMonth}> F </button>
+            <MonthSwitchButton onClick={this.moveForwardMonth}> F </MonthSwitchButton>
           </div>
           <table>
             <thead>
@@ -206,7 +305,7 @@ class Calendar extends React.Component {
               {this.allDates(rightCalendarMoment)}
             </tbody>
           </table>
-        </div>
+        </RightCalendarDiv>
       </div>
     );
   }
