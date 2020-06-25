@@ -239,7 +239,7 @@ class App extends React.Component {
     this.setState({
       totalDays: newTotalDays,
       roomOnlyTotal: newRoomOnlyTotal,
-      taxes: newTaxes.toFixed(2),
+      taxes: Number(newTaxes.toFixed(2)),
       total: newTotal,
     });
   }
@@ -291,7 +291,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-/* <div>
-<Calendar bookedNights={this.state.bookedNights} updateDates={this.updateDates}/>
-</div> */
