@@ -90,6 +90,7 @@ class App extends React.Component {
       clickCount: 1,
     };
     this.getRoomData = this.getRoomData.bind(this);
+    this.sendResData = this.sendResData.bind(this);
     this.guestMenuToggle = this.guestMenuToggle.bind(this);
     this.calendarToggle = this.calendarToggle.bind(this);
     this.updateGuestCount = this.updateGuestCount.bind(this);
@@ -115,6 +116,19 @@ class App extends React.Component {
           totalRatings: results.data[0].totalRatings,
           bookedNights: reservations,
         });
+      });
+  }
+
+  sendResData() {
+    const roomId = window.location.pathname.split('/')[3];
+    const { checkin, checkout } = this.state;
+    if (checkin !== 'Add date' && checkout !== 'Add date')
+    axios.post(`/api/rooms/${roomId}`, {
+      startDate: checkin,
+      endDate: checkout
+    })
+      .catch((error) => {
+        console.log(error);
       });
   }
 
@@ -283,7 +297,10 @@ class App extends React.Component {
           {this.balanceDue()}
         </div>
         <ButtonDiv>
-          <Button style={{ background: 'linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)' }}>Reserve</Button>
+        <Button style={{ background: 'linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)' }}
+          onClick={this.sendResData}>
+            Reserve
+          </Button>
         </ButtonDiv>
       </StyledWrapper>
     );
