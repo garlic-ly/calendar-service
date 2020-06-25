@@ -3,7 +3,6 @@ const config = require('../config.js');
 
 module.exports.connection = mysql.createConnection({
   host: 'localhost',
-  user: 'root',
-  password: config.PW,
+  user: 'student',
   database: 'airbnb',
 });
