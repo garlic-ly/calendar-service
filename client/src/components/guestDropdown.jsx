@@ -29,10 +29,13 @@ const Button = styled.button`
   background: #ffffff;
   border-radius: 50%;
   border: 1px solid #b0b0b0;
-  display: block;
   height: 20px;
   width: 20px;
-  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  font-size: 12px;
 `;
 const CountSpan = styled.span`
   font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
@@ -49,11 +52,11 @@ const GuestDropdown = (props) => {
         <NameDiv>Adults</NameDiv>
         <GuestAdderDiv>
           <Button onClick={(e) => props.minusGuestCount(e)} name="adults">
-            <MinusSVG />
+            -
           </Button>
           <CountSpan>{adults}</CountSpan>
           <Button onClick={(e) => props.addGuestCount(e)} className="adults-add" name="adults">
-            <PlusSVG />
+            +
           </Button>
         </GuestAdderDiv>
       </TypeDiv>
@@ -62,11 +65,11 @@ const GuestDropdown = (props) => {
         <NameDiv>Children</NameDiv>
         <GuestAdderDiv>
           <Button onClick={(e) => props.minusGuestCount(e)} className="children-minus" name="childrenCount">
-            <MinusSVG />
+            -
           </Button>
           <CountSpan>{childrenCount}</CountSpan>
           <Button onClick={(e) => props.addGuestCount(e)} name="childrenCount">
-            <PlusSVG />
+            +
           </Button>
         </GuestAdderDiv>
       </TypeDiv>
@@ -75,11 +78,11 @@ const GuestDropdown = (props) => {
         <NameDiv>Infants</NameDiv>
         <GuestAdderDiv>
           <Button onClick={(e) => props.minusGuestCount(e)} name="infants">
-            <MinusSVG />
+            -
           </Button>
           <CountSpan>{infants}</CountSpan>
           <Button onClick={(e) => props.addGuestCount(e)} name="infants">
-            <PlusSVG />
+            +
           </Button>
         </GuestAdderDiv>
       </TypeDiv>

@@ -203,7 +203,7 @@ class App extends React.Component {
   minusGuestCount(e) {
     const { name } = e.target;
     const { guestCount } = this.state;
-    if (guestCount === 0 || (name === 'adults' && guestCount === 1)) {
+    if (guestCount === 1 || this.state[name] === 0 || (name === 'adults' && guestCount === 1)) {
       return;
     }
     let newCount = this.state[name] - 1;
