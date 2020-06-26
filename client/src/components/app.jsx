@@ -4,7 +4,6 @@ import moment from 'moment';
 import styled from 'styled-components';
 import Guest from './guest.jsx';
 import DatePicker from './datePicker.jsx';
-import CalendarPopUp from './calendarPopUp.jsx';
 import Modal from './modal.jsx';
 
 // Styled-Components
@@ -15,9 +14,10 @@ const StyledWrapper = styled.div`
   border-radius: 12px;
   height: auto;
   width: 30%;
+  position: absolute;
+  top: 10%;
+  left: 10%;
 `;
-// width: 300;
-// height: 300;
 const DollarAmtSpan = styled.span`
   font-size: 22px;
   font-weight: bold;
@@ -124,14 +124,15 @@ class App extends React.Component {
   sendResData() {
     const roomId = window.location.pathname.split('/')[3];
     const { checkin, checkout } = this.state;
-    if (checkin !== 'Add date' && checkout !== 'Add date')
-    axios.post(`/api/rooms/${roomId}`, {
-      startDate: checkin,
-      endDate: checkout
-    })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (checkin !== 'Add date' && checkout !== 'Add date') {
+      axios.post(`/api/rooms/${roomId}`, {
+        startDate: checkin,
+        endDate: checkout,
+      })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   guestMenuToggle() {
@@ -194,17 +195,17 @@ class App extends React.Component {
       const { nightlyRate, totalDays, roomOnlyTotal, cleaningFee, taxes, total } = this.state;
       return (
         <div>
-          <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
+          <div>
             <span>{nightlyRate} x {totalDays} Nights</span> <span>{roomOnlyTotal}</span>
           </div>
-          <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
+          <div>
             <span>Cleaning Fee</span> <span>{cleaningFee}</span>
           </div>
-          <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
+          <div>
             <span>Taxes</span> <span>{taxes}</span>
           </div>
           <hr />
-          <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
+          <div>
             <span>Total</span> <span>{total}</span>
           </div>
         </div>
@@ -275,8 +276,7 @@ class App extends React.Component {
           {this.balanceDue()}
         </div>
         <ButtonDiv>
-        <Button style={{ background: 'linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)' }}
-          onClick={this.sendResData}>
+          <Button style={{ background: 'linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)' }} onClick={this.sendResData}>
             Reserve
           </Button>
         </ButtonDiv>

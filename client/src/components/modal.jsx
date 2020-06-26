@@ -22,15 +22,16 @@ const ModalContent = styled.div`
   border: none;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
   border-radius: 12px;
-  width: 50%;
+  width: 75%;
   height: auto;
-  top:50%;
-  left:50%;
-  transform: translate(-50%,-50%);
+  top:18%;
+  left:16%;
+  transform: translate(-12%,-12%);
 `;
 
 const Modal = (props) => {
-  const { bookedNights, checkin, checkout, calendarToggle, updateDates, clickCount, calendarOpen } = props;
+  const { bookedNights, checkin, checkout, calendarToggle } = props;
+  const { updateDates, clickCount, calendarOpen } = props;
   const showOrHideFunc = () => {
     if (calendarOpen) {
       return (
@@ -50,10 +51,9 @@ const Modal = (props) => {
       );
     }
     return (
-      <ModalHide>
-      </ModalHide>
+      <ModalHide />
     );
-  }
+  };
 
   return (
     showOrHideFunc()

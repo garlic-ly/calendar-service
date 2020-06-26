@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CheckOut from './checkOut.jsx';
 import CheckIn from './checkIn.jsx';
 import Calendar from './calendar.jsx';
+import CloseButton from './closeButton.jsx';
 
 const StyledWrapper = styled.div`
   height: auto;
@@ -37,17 +38,18 @@ const SelectTextDiv = styled.div`
 `;
 
 const CalendarPopUp = (props) => {
-  const { bookedNights, checkin, checkout, calendarToggle, updateDates, clickCount, calendarOpen } = props;
+  const { bookedNights, checkin, checkout, calendarToggle } = props;
+  const { updateDates, clickCount, calendarOpen } = props;
   return (
     <StyledWrapper>
       <SelectDateWrapper>
         <SelectTextDiv>Select dates</SelectTextDiv>
         <DatePickerWrapper>
           <CheckInWrapper>
-            <CheckIn checkin={checkin} calendarToggle={calendarToggle}/>
+            <CheckIn checkin={checkin} calendarToggle={calendarToggle} />
           </CheckInWrapper>
           <CheckOutWrapper>
-            <CheckOut checkout={checkout} calendarToggle={calendarToggle}/>
+            <CheckOut checkout={checkout} calendarToggle={calendarToggle} />
           </CheckOutWrapper>
         </DatePickerWrapper>
       </SelectDateWrapper>
@@ -60,6 +62,7 @@ const CalendarPopUp = (props) => {
           clickCount={clickCount}
         />
       </div>
+      <CloseButton calendarToggle={calendarToggle} />
     </StyledWrapper>
   );
 };
