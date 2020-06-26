@@ -26,19 +26,18 @@ const DollarAmtSpan = styled.span`
 `;
 const NightSpan = styled.span`
   font-size: 16px;
+  line-height: 22px;
   font-weight: regular;
   font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
   color: #222222;
 `;
-const PriceDiv = styled.div`
-  float: left;
-  padding: 10%;
-  padding-right: 0%;
-`;
-const ReviewsDiv = styled.div`
-  float: right;
+const PriceReviewDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10%;
 `;
+
 const ReviewAvgSpan = styled.span`
   padding-right: 10px;
   font-size: 14px;
@@ -282,13 +281,15 @@ class App extends React.Component {
     const { bookedNights, checkin, checkout, clickCount, calendarOpen } = this.state;
     return (
       <StyledWrapper>
-        <PriceDiv>
-          <DollarAmtSpan>${nightlyRate}</DollarAmtSpan>
-          <NightSpan> / Night</NightSpan>
-        </PriceDiv>
-        <ReviewsDiv>
-          <ReviewAvgSpan> {averageRating}  ({totalRatings}) </ReviewAvgSpan>
-        </ReviewsDiv>
+        <PriceReviewDiv>
+          <div>
+            <DollarAmtSpan>${nightlyRate}</DollarAmtSpan>
+            <NightSpan> / Night</NightSpan>
+          </div>
+          <div>
+            <ReviewAvgSpan> {averageRating}  ({totalRatings}) </ReviewAvgSpan>
+          </div>
+        </PriceReviewDiv>
         <CalendarDiv>
           <Modal
             bookedNights={bookedNights}
