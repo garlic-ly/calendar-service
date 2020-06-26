@@ -5,10 +5,6 @@ import CheckIn from './checkIn.jsx';
 import Calendar from './calendar.jsx';
 
 const StyledWrapper = styled.div`
-  background: white;
-  border: none;
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
-  border-radius: 12px;
   height: auto;
   width: auto;
 `;
@@ -17,12 +13,14 @@ const SelectDateWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   padding-top: 2.5%;
+  padding-bottom: 5%;
 `;
 const DatePickerWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   justify-content: space-around;
-  width: 30%;
+  align-items: center;
+  width: 40%;
   border: 1px solid grey;
   border-radius: 12px;
 `;
@@ -39,7 +37,7 @@ const SelectTextDiv = styled.div`
 `;
 
 const CalendarPopUp = (props) => {
-  const { bookedNights, checkin, checkout, calendarToggle, updateDates, clickCount } = props;
+  const { bookedNights, checkin, checkout, calendarToggle, updateDates, clickCount, calendarOpen } = props;
   return (
     <StyledWrapper>
       <SelectDateWrapper>

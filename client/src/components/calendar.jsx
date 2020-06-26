@@ -6,10 +6,12 @@ import RightArrowSVG from './icons/rightArrowSVG.jsx';
 
 const LeftCalendarDiv = styled.div`
   float: left;
+  padding-left: 5%;
 `;
 
 const RightCalendarDiv = styled.div`
   float: right;
+  padding-right: 5%;
 `;
 
 const WeekdayTD = styled.td`
