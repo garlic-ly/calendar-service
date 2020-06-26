@@ -22,13 +22,15 @@ const StyledTable = styled.table`
 `;
 
 const WeekdayTD = styled.td`
+  color: #484848;
   font-size: 14px;
-  color: grey;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
   text-align: center;
 `;
 
 const BookedTD = styled.td`
   font-size: 14px;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
   text-align: center;
   color: #b0b0b0;
   text-decoration: line-through;
@@ -37,28 +39,32 @@ const BookedTD = styled.td`
 const AvailableTD = styled.td`
   font-size: 14px;
   text-align: center;
-  color: black;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
   border-radius: 50%;
   &:hover {
-    border: 1px solid black;
+    border: 1px solid #222222;
   }
 `;
 
 const ChoosenTD = styled.td`
   background: black;
-  color: white;
   border-radius: 50%;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
   text-align: center;
 `;
 
 const PartOfResTD = styled.td`
   font-size: 14px;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
   text-align: center;
-  color: black;
+  color: #222222;
   background: #f7f7f7;
   &:hover {
-    border: 1px solid black;
-    background: white;
+    border: 1px solid #222222;
+    background: #ffffff;
     border-radius: 50%;
   }
 `;
@@ -66,7 +72,7 @@ const PartOfResTD = styled.td`
 const MonthSwitchButton = styled.button`
   border-radius: 50%;
   border: none;
-  background: white;
+  background: #ffffff;
   &:hover {
     background: #f7f7f7
   }
@@ -86,6 +92,9 @@ const MonthButtonDiv = styled.div`
 const MonthYearDiv = styled.div`
   display: flex;
   justify-content: center;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  color: #222222;
 `;
 
 class Calendar extends React.Component {

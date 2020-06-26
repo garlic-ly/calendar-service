@@ -6,13 +6,14 @@ import GuestDropdown from './guestDropdown.jsx';
 const GuestWrapper = styled.div`
   border-bottom-right-radius: 12px;
   border-bottom-left-radius: 12px;
-  border: 1px solid grey;
+  border: 1px solid #b0b0b0;
   padding-top:0%;
 `;
 const GuestDiv = styled.div`
   padding-left: 10%;
   padding-top: 5%;
-  color: black;
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
   font-weight: 800;
   font-size: 10px;
 `;
@@ -20,6 +21,8 @@ const GuestCountDiv = styled.div`
   padding-left: 10%;
   padding-bottom: 5%;
   font-size: 14px;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
 `;
 
 const Guest = (props) => {
