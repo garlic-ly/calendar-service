@@ -135,7 +135,8 @@ class App extends React.Component {
     this.sendResData = this.sendResData.bind(this);
     this.guestMenuToggle = this.guestMenuToggle.bind(this);
     this.calendarToggle = this.calendarToggle.bind(this);
-    this.updateGuestCount = this.updateGuestCount.bind(this);
+    this.addGuestCount = this.addGuestCount.bind(this);
+    this.minusGuestCount = this.minusGuestCount.bind(this);
     this.updateDates = this.updateDates.bind(this);
     this.balanceDue = this.balanceDue.bind(this);
     this.calculateTotals = this.calculateTotals.bind(this);
@@ -188,21 +189,25 @@ class App extends React.Component {
     });
   }
 
-  updateGuestCount(e) {
+  addGuestCount(e) {
     const { name } = e.target;
     const { guestCount } = this.state;
-    let newCount;
-    let newGuestTotal;
-    if (e.target.innerHTML === '+') {
-      newCount = this.state[name] + 1;
-      newGuestTotal = guestCount + 1;
-    } else {
-      if (this.state[name] === 0) {
-        return;
-      }
-      newCount = this.state[name] - 1;
-      newGuestTotal = guestCount - 1;
+    let newCount = this.state[name] + 1;
+    let newGuestTotal = guestCount + 1;
+    this.setState({
+      [name]: newCount,
+      guestCount: newGuestTotal,
+    });
+  }
+
+  minusGuestCount(e) {
+    const { name } = e.target;
+    const { guestCount } = this.state;
+    if (guestCount === 0 || (name === 'adults' && guestCount === 1)) {
+      return;
     }
+    let newCount = this.state[name] - 1;
+    let newGuestTotal = guestCount - 1;
     this.setState({
       [name]: newCount,
       guestCount: newGuestTotal,
@@ -313,7 +318,8 @@ class App extends React.Component {
             dropdownOpen={isGuestDropdownOpen}
             guestMenuToggle={this.guestMenuToggle}
             guestCount={guestCount}
-            updateGuestCount={this.updateGuestCount}
+            minusGuestCount={this.minusGuestCount}
+            addGuestCount={this.addGuestCount}
             adults={adults}
             childrenCount={childrenCount}
             infants={infants}

@@ -44,13 +44,14 @@ const Guest = (props) => {
 
   const menuClicked = () => {
     if (props.dropdownOpen) {
-      const { updateGuestCount } = props;
+      const { minusGuestCount, addGuestCount } = props;
       const { adults } = props;
       const { childrenCount } = props;
       const { infants } = props;
       return (
         <GuestDropdown
-          updateGuestCount={updateGuestCount}
+          minusGuestCount={minusGuestCount}
+          addGuestCount={addGuestCount}
           adults={adults}
           childrenCount={childrenCount}
           infants={infants}
@@ -79,7 +80,8 @@ Guest.propTypes = {
   dropdownOpen: PropTypes.bool.isRequired,
   guestMenuToggle: PropTypes.func.isRequired,
   guestCount: PropTypes.number.isRequired,
-  updateGuestCount: PropTypes.func.isRequired,
+  minusGuestCount: PropTypes.func.isRequired,
+  addGuestCount: PropTypes.func.isRequired,
   adults: PropTypes.number.isRequired,
   childrenCount: PropTypes.number.isRequired,
   infants: PropTypes.number.isRequired,
