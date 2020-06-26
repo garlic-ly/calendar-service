@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Guest from './guest.jsx';
 import DatePicker from './datePicker.jsx';
 import CalendarPopUp from './calendarPopUp.jsx';
+import Modal from './modal.jsx';
 
 // Styled-Components
 const StyledWrapper = styled.div`
@@ -96,7 +97,6 @@ class App extends React.Component {
     this.guestMenuToggle = this.guestMenuToggle.bind(this);
     this.calendarToggle = this.calendarToggle.bind(this);
     this.updateGuestCount = this.updateGuestCount.bind(this);
-    this.calendarCheck = this.calendarCheck.bind(this);
     this.updateDates = this.updateDates.bind(this);
     this.balanceDue = this.balanceDue.bind(this);
     this.calculateTotals = this.calculateTotals.bind(this);
@@ -169,37 +169,6 @@ class App extends React.Component {
     });
   }
 
-  calendarCheck() {
-    const { calendarOpen } = this.state;
-    if (calendarOpen) {
-      const { bookedNights, checkin, checkout, clickCount } = this.state;
-      return (
-        <CalendarDiv>
-          <CalendarPopUp
-            bookedNights={bookedNights}
-            checkin={checkin}
-            checkout={checkout}
-            clickCount={clickCount}
-            calendarToggle={this.calendarToggle}
-            updateDates={this.updateDates}
-          />
-        </CalendarDiv>
-      );
-    }
-    const { checkin, checkout } = this.state;
-    return (
-      <CalendarDiv>
-        <CheckWrapper>
-          <DatePicker
-            checkin={checkin}
-            checkout={checkout}
-            calendarToggle={this.calendarToggle}
-          />
-        </CheckWrapper>
-      </CalendarDiv>
-    );
-  }
-
   updateDates(newDate) {
     const { clickCount } = this.state;
     const newClickCount = clickCount + 1;
@@ -261,14 +230,9 @@ class App extends React.Component {
   }
 
   render() {
-    const { nightlyRate } = this.state;
-    const { averageRating } = this.state;
-    const { totalRatings } = this.state;
-    const { isGuestDropdownOpen } = this.state;
-    const { guestCount } = this.state;
-    const { adults } = this.state;
-    const { childrenCount } = this.state;
-    const { infants } = this.state;
+    const { nightlyRate, averageRating, totalRatings, isGuestDropdownOpen } = this.state;
+    const { guestCount, adults, childrenCount, infants } = this.state;
+    const { bookedNights, checkin, checkout, clickCount, calendarOpen } = this.state;
     return (
       <StyledWrapper>
         <PriceDiv>
@@ -278,7 +242,24 @@ class App extends React.Component {
         <ReviewsDiv>
           <ReviewAvgSpan> {averageRating}  ({totalRatings}) </ReviewAvgSpan>
         </ReviewsDiv>
-        {this.calendarCheck()}
+        <CalendarDiv>
+          <Modal
+            bookedNights={bookedNights}
+            checkin={checkin}
+            checkout={checkout}
+            clickCount={clickCount}
+            calendarOpen={calendarOpen}
+            calendarToggle={this.calendarToggle}
+            updateDates={this.updateDates}
+          />
+          <CheckWrapper>
+            <DatePicker
+              checkin={checkin}
+              checkout={checkout}
+              calendarToggle={this.calendarToggle}
+            />
+          </CheckWrapper>
+        </CalendarDiv>
         <GuestsDiv>
           <Guest
             dropdownOpen={isGuestDropdownOpen}
@@ -290,7 +271,7 @@ class App extends React.Component {
             infants={infants}
           />
         </GuestsDiv>
-        <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
+        <div>
           {this.balanceDue()}
         </div>
         <ButtonDiv>
