@@ -11,6 +11,6 @@ describe('Tests for Calendar Component', () => {
 
     const wrapper = shallow(<Calendar bookedNights={[]}/>);
     expect(wrapper.exists()).toBe(true);
-    expect(wrapper.find('table').length).toBe(2);
+    expect(wrapper.find('thead').length).toBe(2);
   });
 });
