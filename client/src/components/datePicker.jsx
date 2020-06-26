@@ -7,6 +7,7 @@ import CheckOut from './checkOut.jsx';
 const DatePickerWrapper = styled.div`
   display: flex;
   justify-content: space-around;
+  align-items: center;
 `;
 
 const DatePicker = (props) => {

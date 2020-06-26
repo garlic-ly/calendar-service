@@ -3,29 +3,56 @@ import styled from 'styled-components';
 import CheckOut from './checkOut.jsx';
 import CheckIn from './checkIn.jsx';
 import Calendar from './calendar.jsx';
+import CloseButton from './closeButton.jsx';
 
 const StyledWrapper = styled.div`
-  background: white;
-  border: none;
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
+  height: auto;
+  width: auto;
+`;
+
+const SelectDateWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  padding-top: 2.5%;
+  padding-bottom: 5%;
+`;
+const DatePickerWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  justify-content: space-around;
+  align-items: center;
+  width: 40%;
+  border: 1px solid grey;
   border-radius: 12px;
+`;
+const CheckInWrapper = styled.div`
+  float: left;
+`;
+const CheckOutWrapper = styled.div`
+  float: right;
+`;
+const SelectTextDiv = styled.div`
+  font-color: black;
+  font-size: 22px;
+  width: 50%;
 `;
 
 const CalendarPopUp = (props) => {
-  const { bookedNights, checkin, checkout, calendarToggle, updateDates, clickCount } = props;
+  const { bookedNights, checkin, checkout, calendarToggle } = props;
+  const { updateDates, clickCount, calendarOpen } = props;
   return (
     <StyledWrapper>
-      <div style={{ display: 'flex' }, { justifyContent: 'space-between' }, { alignItems: 'flex-start' }}>
-        <div style={{ display: 'block' }}>Select dates</div>
-        <div style={{ display: 'block' }}>
-          <div>
-            <CheckIn checkin={checkin} calendarToggle={calendarToggle}/>
-          </div>
-          <div>
-            <CheckOut checkout={checkout} calendarToggle={calendarToggle}/>
-          </div>
-        </div>
-      </div>
+      <SelectDateWrapper>
+        <SelectTextDiv>Select dates</SelectTextDiv>
+        <DatePickerWrapper>
+          <CheckInWrapper>
+            <CheckIn checkin={checkin} calendarToggle={calendarToggle} />
+          </CheckInWrapper>
+          <CheckOutWrapper>
+            <CheckOut checkout={checkout} calendarToggle={calendarToggle} />
+          </CheckOutWrapper>
+        </DatePickerWrapper>
+      </SelectDateWrapper>
       <div>
         <Calendar
           bookedNights={bookedNights}
@@ -35,6 +62,7 @@ const CalendarPopUp = (props) => {
           clickCount={clickCount}
         />
       </div>
+      <CloseButton calendarToggle={calendarToggle} />
     </StyledWrapper>
   );
 };

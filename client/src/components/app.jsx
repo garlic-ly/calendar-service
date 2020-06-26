@@ -4,7 +4,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 import Guest from './guest.jsx';
 import DatePicker from './datePicker.jsx';
-import CalendarPopUp from './calendarPopUp.jsx';
+import Modal from './modal.jsx';
 
 // Styled-Components
 const StyledWrapper = styled.div`
@@ -12,9 +12,12 @@ const StyledWrapper = styled.div`
   border: none;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
   border-radius: 12px;
+  height: auto;
+  width: 30%;
+  position: absolute;
+  top: 10%;
+  left: 10%;
 `;
-// width: 300;
-// height: 300;
 const DollarAmtSpan = styled.span`
   font-size: 22px;
   font-weight: bold;
@@ -94,7 +97,6 @@ class App extends React.Component {
     this.guestMenuToggle = this.guestMenuToggle.bind(this);
     this.calendarToggle = this.calendarToggle.bind(this);
     this.updateGuestCount = this.updateGuestCount.bind(this);
-    this.calendarCheck = this.calendarCheck.bind(this);
     this.updateDates = this.updateDates.bind(this);
     this.balanceDue = this.balanceDue.bind(this);
     this.calculateTotals = this.calculateTotals.bind(this);
@@ -122,14 +124,15 @@ class App extends React.Component {
   sendResData() {
     const roomId = window.location.pathname.split('/')[3];
     const { checkin, checkout } = this.state;
-    if (checkin !== 'Add date' && checkout !== 'Add date')
-    axios.post(`/api/rooms/${roomId}`, {
-      startDate: checkin,
-      endDate: checkout
-    })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (checkin !== 'Add date' && checkout !== 'Add date') {
+      axios.post(`/api/rooms/${roomId}`, {
+        startDate: checkin,
+        endDate: checkout,
+      })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   guestMenuToggle() {
@@ -167,37 +170,6 @@ class App extends React.Component {
     });
   }
 
-  calendarCheck() {
-    const { calendarOpen } = this.state;
-    if (calendarOpen) {
-      const { bookedNights, checkin, checkout, clickCount } = this.state;
-      return (
-        <CalendarDiv>
-          <CalendarPopUp
-            bookedNights={bookedNights}
-            checkin={checkin}
-            checkout={checkout}
-            clickCount={clickCount}
-            calendarToggle={this.calendarToggle}
-            updateDates={this.updateDates}
-          />
-        </CalendarDiv>
-      );
-    }
-    const { checkin, checkout } = this.state;
-    return (
-      <CalendarDiv>
-        <CheckWrapper>
-          <DatePicker
-            checkin={checkin}
-            checkout={checkout}
-            calendarToggle={this.calendarToggle}
-          />
-        </CheckWrapper>
-      </CalendarDiv>
-    );
-  }
-
   updateDates(newDate) {
     const { clickCount } = this.state;
     const newClickCount = clickCount + 1;
@@ -223,17 +195,17 @@ class App extends React.Component {
       const { nightlyRate, totalDays, roomOnlyTotal, cleaningFee, taxes, total } = this.state;
       return (
         <div>
-          <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
+          <div>
             <span>{nightlyRate} x {totalDays} Nights</span> <span>{roomOnlyTotal}</span>
           </div>
-          <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
+          <div>
             <span>Cleaning Fee</span> <span>{cleaningFee}</span>
           </div>
-          <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
+          <div>
             <span>Taxes</span> <span>{taxes}</span>
           </div>
           <hr />
-          <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
+          <div>
             <span>Total</span> <span>{total}</span>
           </div>
         </div>
@@ -259,14 +231,9 @@ class App extends React.Component {
   }
 
   render() {
-    const { nightlyRate } = this.state;
-    const { averageRating } = this.state;
-    const { totalRatings } = this.state;
-    const { isGuestDropdownOpen } = this.state;
-    const { guestCount } = this.state;
-    const { adults } = this.state;
-    const { childrenCount } = this.state;
-    const { infants } = this.state;
+    const { nightlyRate, averageRating, totalRatings, isGuestDropdownOpen } = this.state;
+    const { guestCount, adults, childrenCount, infants } = this.state;
+    const { bookedNights, checkin, checkout, clickCount, calendarOpen } = this.state;
     return (
       <StyledWrapper>
         <PriceDiv>
@@ -274,14 +241,26 @@ class App extends React.Component {
           <NightSpan> / Night</NightSpan>
         </PriceDiv>
         <ReviewsDiv>
-          <ReviewAvgSpan>
-            {averageRating}
-            (
-            {totalRatings}
-            )
-          </ReviewAvgSpan>
+          <ReviewAvgSpan> {averageRating}  ({totalRatings}) </ReviewAvgSpan>
         </ReviewsDiv>
-        {this.calendarCheck()}
+        <CalendarDiv>
+          <Modal
+            bookedNights={bookedNights}
+            checkin={checkin}
+            checkout={checkout}
+            clickCount={clickCount}
+            calendarOpen={calendarOpen}
+            calendarToggle={this.calendarToggle}
+            updateDates={this.updateDates}
+          />
+          <CheckWrapper>
+            <DatePicker
+              checkin={checkin}
+              checkout={checkout}
+              calendarToggle={this.calendarToggle}
+            />
+          </CheckWrapper>
+        </CalendarDiv>
         <GuestsDiv>
           <Guest
             dropdownOpen={isGuestDropdownOpen}
@@ -293,12 +272,11 @@ class App extends React.Component {
             infants={infants}
           />
         </GuestsDiv>
-        <div style={{ display: 'flex' }, { justifyContent: 'space-between' }}>
+        <div>
           {this.balanceDue()}
         </div>
         <ButtonDiv>
-        <Button style={{ background: 'linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)' }}
-          onClick={this.sendResData}>
+          <Button style={{ background: 'linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)' }} onClick={this.sendResData}>
             Reserve
           </Button>
         </ButtonDiv>

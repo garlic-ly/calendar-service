@@ -1,15 +1,24 @@
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
+import LeftArrowSVG from './icons/leftArrowSVG.jsx';
+import RightArrowSVG from './icons/rightArrowSVG.jsx';
 
 const LeftCalendarDiv = styled.div`
-  width: 50%;
   float: left;
+  padding-left: 5%;
+  width: 40%;
 `;
 
 const RightCalendarDiv = styled.div`
-  width: 50%;
   float: right;
+  padding-right: 5%;
+  width: 40%;
+`;
+
+const StyledTable = styled.table`
+  table-layout: fixed;
+  width: 100%;
 `;
 
 const WeekdayTD = styled.td`
@@ -32,7 +41,6 @@ const AvailableTD = styled.td`
   border-radius: 50%;
   &:hover {
     border: 1px solid black;
-    background: white;
   }
 `;
 
@@ -57,11 +65,27 @@ const PartOfResTD = styled.td`
 
 const MonthSwitchButton = styled.button`
   border-radius: 50%;
-  background: white;
   border: none;
+  background: white;
   &:hover {
     background: #f7f7f7
   }
+`;
+
+const CalendarHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MonthButtonDiv = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+
+const MonthYearDiv = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 class Calendar extends React.Component {
@@ -191,6 +215,7 @@ class Calendar extends React.Component {
     });
   }
 
+  // Calendar Date Conditional Render Helper Functions
   isBooked(date, calMoment) {
     // Compose Date
     let fullDate = this.createDate(date, calMoment);
@@ -275,11 +300,15 @@ class Calendar extends React.Component {
     return (
       <div>
         <LeftCalendarDiv className="leftCalendar">
-          <div>
-            <MonthSwitchButton onClick={this.moveBackMonth}> B </MonthSwitchButton>
-            <span>{this.month(leftCalendarMoment)} {this.year(leftCalendarMoment)}</span>
-          </div>
-          <table>
+          <CalendarHeader>
+            <MonthButtonDiv>
+              <MonthSwitchButton onClick={this.moveBackMonth}> <LeftArrowSVG /> </MonthSwitchButton>
+            </MonthButtonDiv>
+            <MonthYearDiv>
+              <div>{this.month(leftCalendarMoment)} {this.year(leftCalendarMoment)}</div>
+            </MonthYearDiv>
+          </CalendarHeader>
+          <StyledTable>
             <thead>
               <tr>
                 {this.weekHeader()}
@@ -288,14 +317,14 @@ class Calendar extends React.Component {
             <tbody>
               {this.allDates(leftCalendarMoment)}
             </tbody>
-          </table>
+          </StyledTable>
         </LeftCalendarDiv>
         <RightCalendarDiv className="rightCalendar">
-          <div>
+          <CalendarHeader>
             <span>{this.month(rightCalendarMoment)} {this.year(rightCalendarMoment)}</span>
-            <MonthSwitchButton onClick={this.moveForwardMonth}> F </MonthSwitchButton>
-          </div>
-          <table>
+            <MonthSwitchButton onClick={this.moveForwardMonth}> <RightArrowSVG /> </MonthSwitchButton>
+          </CalendarHeader>
+          <StyledTable>
             <thead>
               <tr>
                 {this.weekHeader()}
@@ -304,7 +333,7 @@ class Calendar extends React.Component {
             <tbody>
               {this.allDates(rightCalendarMoment)}
             </tbody>
-          </table>
+          </StyledTable>
         </RightCalendarDiv>
       </div>
     );
