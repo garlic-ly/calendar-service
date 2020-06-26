@@ -8,7 +8,7 @@ import Modal from './modal.jsx';
 
 // Styled-Components
 const StyledWrapper = styled.div`
-  background: white;
+  background: #ffffff;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
   border-radius: 12px;
@@ -21,14 +21,19 @@ const StyledWrapper = styled.div`
 const DollarAmtSpan = styled.span`
   font-size: 22px;
   font-weight: bold;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
 `;
 const NightSpan = styled.span`
   font-size: 16px;
   font-weight: regular;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
 `;
 const PriceDiv = styled.div`
   float: left;
   padding: 10%;
+  padding-right: 0%;
 `;
 const ReviewsDiv = styled.div`
   float: right;
@@ -37,7 +42,8 @@ const ReviewsDiv = styled.div`
 const ReviewAvgSpan = styled.span`
   padding-right: 10px;
   font-size: 14px;
-  color: grey;
+  color: #717171;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
 `;
 const CalendarDiv = styled.div`
   clear: both;
@@ -48,7 +54,7 @@ const CalendarDiv = styled.div`
 const CheckWrapper = styled.div`
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
-  border: 1px solid grey;
+  border: 1px solid #b0b0b0;
   padding-bottom: 0%;
 `;
 const GuestsDiv = styled.div`
@@ -65,9 +71,43 @@ const ButtonDiv = styled.div`
 const Button = styled.button`
   border-radius: 8px;
   border: none;
-  color: white;
+  color: #ffffff;
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
   width: 200px;
   padding: 5%;
+`;
+
+const AmountOwedOuterDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10%;
+  padding-right: 10%;
+`;
+
+const TotalAmtOwedDiv = styled(AmountOwedOuterDiv)`
+  padding-bottom: 10%;
+`;
+
+const LineBreakDiv = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const LineBreak = styled.hr`
+  width: 80%;
+`;
+
+const PreTotalDivs = styled.div`
+  font-size: 16px;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
+`;
+
+const TotalDiv = styled(PreTotalDivs)`
+  font-weight: 800;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
 `;
 
 class App extends React.Component {
@@ -195,19 +235,25 @@ class App extends React.Component {
       const { nightlyRate, totalDays, roomOnlyTotal, cleaningFee, taxes, total } = this.state;
       return (
         <div>
-          <div>
-            <span>{nightlyRate} x {totalDays} Nights</span> <span>{roomOnlyTotal}</span>
-          </div>
-          <div>
-            <span>Cleaning Fee</span> <span>{cleaningFee}</span>
-          </div>
-          <div>
-            <span>Taxes</span> <span>{taxes}</span>
-          </div>
-          <hr />
-          <div>
-            <span>Total</span> <span>{total}</span>
-          </div>
+          <AmountOwedOuterDiv>
+            <PreTotalDivs>{nightlyRate} x {totalDays} Nights</PreTotalDivs>
+            <PreTotalDivs>${roomOnlyTotal}</PreTotalDivs>
+          </AmountOwedOuterDiv>
+          <AmountOwedOuterDiv>
+            <PreTotalDivs>Cleaning Fee</PreTotalDivs>
+            <PreTotalDivs>${cleaningFee}</PreTotalDivs>
+          </AmountOwedOuterDiv>
+          <AmountOwedOuterDiv>
+            <PreTotalDivs>Taxes</PreTotalDivs>
+            <PreTotalDivs>${taxes}</PreTotalDivs>
+          </AmountOwedOuterDiv>
+          <LineBreakDiv>
+            <LineBreak/>
+          </LineBreakDiv>
+          <TotalAmtOwedDiv>
+            <TotalDiv>Total</TotalDiv>
+            <TotalDiv>${total}</TotalDiv>
+          </TotalAmtOwedDiv>
         </div>
       );
     }
@@ -226,7 +272,7 @@ class App extends React.Component {
       totalDays: newTotalDays,
       roomOnlyTotal: newRoomOnlyTotal,
       taxes: Number(newTaxes.toFixed(2)),
-      total: newTotal,
+      total: Number(newTotal.toFixed(2)),
     });
   }
 
@@ -237,7 +283,7 @@ class App extends React.Component {
     return (
       <StyledWrapper>
         <PriceDiv>
-          <DollarAmtSpan>{nightlyRate}</DollarAmtSpan>
+          <DollarAmtSpan>${nightlyRate}</DollarAmtSpan>
           <NightSpan> / Night</NightSpan>
         </PriceDiv>
         <ReviewsDiv>
