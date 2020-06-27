@@ -75,6 +75,7 @@ const Button = styled.button`
   font-size: 16px;
   width: 200px;
   padding: 5%;
+  background: linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%);
 `;
 
 const AmountOwedOuterDiv = styled.div`
@@ -329,7 +330,7 @@ class App extends React.Component {
           {this.balanceDue()}
         </div>
         <ButtonDiv>
-          <Button style={{ background: 'linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)' }} onClick={this.sendResData}>
+          <Button onClick={this.sendResData}>
             Reserve
           </Button>
         </ButtonDiv>
