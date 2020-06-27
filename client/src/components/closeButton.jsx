@@ -12,7 +12,9 @@ const StyledButton = styled.button`
   background: #202020;
   border-radius: 5px;
   border: none;
-  color: white;
+  color: #ffffff;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
   padding: 2%;
   &:hover {
     background: #000000;

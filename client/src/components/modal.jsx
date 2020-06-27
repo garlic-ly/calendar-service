@@ -8,7 +8,6 @@ const ModalWrapper = styled.div`
   left: 0;
   width:100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
 `;
 const ModalDisplay = styled(ModalWrapper)`
   display: block;
@@ -18,13 +17,13 @@ const ModalHide = styled(ModalWrapper)`
 `;
 const ModalContent = styled.div`
   position:fixed;
-  background: white;
+  background: #ffffff;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
   border-radius: 12px;
   width: 75%;
   height: auto;
-  top:18%;
+  top:25%;
   left:16%;
   transform: translate(-12%,-12%);
 `;

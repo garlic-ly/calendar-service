@@ -6,13 +6,14 @@ import GuestDropdown from './guestDropdown.jsx';
 const GuestWrapper = styled.div`
   border-bottom-right-radius: 12px;
   border-bottom-left-radius: 12px;
-  border: 1px solid grey;
+  border: 1px solid #b0b0b0;
   padding-top:0%;
 `;
 const GuestDiv = styled.div`
   padding-left: 10%;
   padding-top: 5%;
-  color: black;
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
   font-weight: 800;
   font-size: 10px;
 `;
@@ -20,6 +21,8 @@ const GuestCountDiv = styled.div`
   padding-left: 10%;
   padding-bottom: 5%;
   font-size: 14px;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
 `;
 
 const Guest = (props) => {
@@ -41,13 +44,14 @@ const Guest = (props) => {
 
   const menuClicked = () => {
     if (props.dropdownOpen) {
-      const { updateGuestCount } = props;
+      const { minusGuestCount, addGuestCount } = props;
       const { adults } = props;
       const { childrenCount } = props;
       const { infants } = props;
       return (
         <GuestDropdown
-          updateGuestCount={updateGuestCount}
+          minusGuestCount={minusGuestCount}
+          addGuestCount={addGuestCount}
           adults={adults}
           childrenCount={childrenCount}
           infants={infants}
@@ -76,7 +80,8 @@ Guest.propTypes = {
   dropdownOpen: PropTypes.bool.isRequired,
   guestMenuToggle: PropTypes.func.isRequired,
   guestCount: PropTypes.number.isRequired,
-  updateGuestCount: PropTypes.func.isRequired,
+  minusGuestCount: PropTypes.func.isRequired,
+  addGuestCount: PropTypes.func.isRequired,
   adults: PropTypes.number.isRequired,
   childrenCount: PropTypes.number.isRequired,
   infants: PropTypes.number.isRequired,

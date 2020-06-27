@@ -22,7 +22,7 @@ const DatePickerWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
   width: 40%;
-  border: 1px solid grey;
+  border: 1px solid #b0b0b0;
   border-radius: 12px;
 `;
 const CheckInWrapper = styled.div`
@@ -32,7 +32,8 @@ const CheckOutWrapper = styled.div`
   float: right;
 `;
 const SelectTextDiv = styled.div`
-  font-color: black;
+  font-color: #222222;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
   font-size: 22px;
   width: 50%;
 `;

@@ -8,7 +8,7 @@ import Modal from './modal.jsx';
 
 // Styled-Components
 const StyledWrapper = styled.div`
-  background: white;
+  background: #ffffff;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
   border-radius: 12px;
@@ -21,23 +21,28 @@ const StyledWrapper = styled.div`
 const DollarAmtSpan = styled.span`
   font-size: 22px;
   font-weight: bold;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
 `;
 const NightSpan = styled.span`
   font-size: 16px;
+  line-height: 22px;
   font-weight: regular;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
 `;
-const PriceDiv = styled.div`
-  float: left;
+const PriceReviewDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10%;
 `;
-const ReviewsDiv = styled.div`
-  float: right;
-  padding: 10%;
-`;
+
 const ReviewAvgSpan = styled.span`
   padding-right: 10px;
   font-size: 14px;
-  color: grey;
+  color: #717171;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
 `;
 const CalendarDiv = styled.div`
   clear: both;
@@ -48,7 +53,7 @@ const CalendarDiv = styled.div`
 const CheckWrapper = styled.div`
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
-  border: 1px solid grey;
+  border: 1px solid #b0b0b0;
   padding-bottom: 0%;
 `;
 const GuestsDiv = styled.div`
@@ -65,9 +70,44 @@ const ButtonDiv = styled.div`
 const Button = styled.button`
   border-radius: 8px;
   border: none;
-  color: white;
+  color: #ffffff;
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
   width: 200px;
   padding: 5%;
+  background: linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%);
+`;
+
+const AmountOwedOuterDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10%;
+  padding-right: 10%;
+`;
+
+const TotalAmtOwedDiv = styled(AmountOwedOuterDiv)`
+  padding-bottom: 10%;
+`;
+
+const LineBreakDiv = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const LineBreak = styled.hr`
+  width: 80%;
+`;
+
+const PreTotalDivs = styled.div`
+  font-size: 16px;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
+`;
+
+const TotalDiv = styled(PreTotalDivs)`
+  font-weight: 800;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  color: #222222;
 `;
 
 class App extends React.Component {
@@ -96,7 +136,8 @@ class App extends React.Component {
     this.sendResData = this.sendResData.bind(this);
     this.guestMenuToggle = this.guestMenuToggle.bind(this);
     this.calendarToggle = this.calendarToggle.bind(this);
-    this.updateGuestCount = this.updateGuestCount.bind(this);
+    this.addGuestCount = this.addGuestCount.bind(this);
+    this.minusGuestCount = this.minusGuestCount.bind(this);
     this.updateDates = this.updateDates.bind(this);
     this.balanceDue = this.balanceDue.bind(this);
     this.calculateTotals = this.calculateTotals.bind(this);
@@ -149,21 +190,25 @@ class App extends React.Component {
     });
   }
 
-  updateGuestCount(e) {
+  addGuestCount(e) {
     const { name } = e.target;
     const { guestCount } = this.state;
-    let newCount;
-    let newGuestTotal;
-    if (e.target.innerHTML === '+') {
-      newCount = this.state[name] + 1;
-      newGuestTotal = guestCount + 1;
-    } else {
-      if (this.state[name] === 0) {
-        return;
-      }
-      newCount = this.state[name] - 1;
-      newGuestTotal = guestCount - 1;
+    let newCount = this.state[name] + 1;
+    let newGuestTotal = guestCount + 1;
+    this.setState({
+      [name]: newCount,
+      guestCount: newGuestTotal,
+    });
+  }
+
+  minusGuestCount(e) {
+    const { name } = e.target;
+    const { guestCount } = this.state;
+    if (guestCount === 1 || this.state[name] === 0 || (name === 'adults' && guestCount === 1)) {
+      return;
     }
+    let newCount = this.state[name] - 1;
+    let newGuestTotal = guestCount - 1;
     this.setState({
       [name]: newCount,
       guestCount: newGuestTotal,
@@ -195,19 +240,25 @@ class App extends React.Component {
       const { nightlyRate, totalDays, roomOnlyTotal, cleaningFee, taxes, total } = this.state;
       return (
         <div>
-          <div>
-            <span>{nightlyRate} x {totalDays} Nights</span> <span>{roomOnlyTotal}</span>
-          </div>
-          <div>
-            <span>Cleaning Fee</span> <span>{cleaningFee}</span>
-          </div>
-          <div>
-            <span>Taxes</span> <span>{taxes}</span>
-          </div>
-          <hr />
-          <div>
-            <span>Total</span> <span>{total}</span>
-          </div>
+          <AmountOwedOuterDiv>
+            <PreTotalDivs>{nightlyRate} x {totalDays} Nights</PreTotalDivs>
+            <PreTotalDivs>${roomOnlyTotal}</PreTotalDivs>
+          </AmountOwedOuterDiv>
+          <AmountOwedOuterDiv>
+            <PreTotalDivs>Cleaning Fee</PreTotalDivs>
+            <PreTotalDivs>${cleaningFee}</PreTotalDivs>
+          </AmountOwedOuterDiv>
+          <AmountOwedOuterDiv>
+            <PreTotalDivs>Taxes</PreTotalDivs>
+            <PreTotalDivs>${taxes}</PreTotalDivs>
+          </AmountOwedOuterDiv>
+          <LineBreakDiv>
+            <LineBreak/>
+          </LineBreakDiv>
+          <TotalAmtOwedDiv>
+            <TotalDiv>Total</TotalDiv>
+            <TotalDiv>${total}</TotalDiv>
+          </TotalAmtOwedDiv>
         </div>
       );
     }
@@ -226,7 +277,7 @@ class App extends React.Component {
       totalDays: newTotalDays,
       roomOnlyTotal: newRoomOnlyTotal,
       taxes: Number(newTaxes.toFixed(2)),
-      total: newTotal,
+      total: Number(newTotal.toFixed(2)),
     });
   }
 
@@ -236,13 +287,15 @@ class App extends React.Component {
     const { bookedNights, checkin, checkout, clickCount, calendarOpen } = this.state;
     return (
       <StyledWrapper>
-        <PriceDiv>
-          <DollarAmtSpan>{nightlyRate}</DollarAmtSpan>
-          <NightSpan> / Night</NightSpan>
-        </PriceDiv>
-        <ReviewsDiv>
-          <ReviewAvgSpan> {averageRating}  ({totalRatings}) </ReviewAvgSpan>
-        </ReviewsDiv>
+        <PriceReviewDiv>
+          <div>
+            <DollarAmtSpan>${nightlyRate}</DollarAmtSpan>
+            <NightSpan> / Night</NightSpan>
+          </div>
+          <div>
+            <ReviewAvgSpan> {averageRating}  ({totalRatings}) </ReviewAvgSpan>
+          </div>
+        </PriceReviewDiv>
         <CalendarDiv>
           <Modal
             bookedNights={bookedNights}
@@ -266,7 +319,8 @@ class App extends React.Component {
             dropdownOpen={isGuestDropdownOpen}
             guestMenuToggle={this.guestMenuToggle}
             guestCount={guestCount}
-            updateGuestCount={this.updateGuestCount}
+            minusGuestCount={this.minusGuestCount}
+            addGuestCount={this.addGuestCount}
             adults={adults}
             childrenCount={childrenCount}
             infants={infants}
@@ -276,7 +330,7 @@ class App extends React.Component {
           {this.balanceDue()}
         </div>
         <ButtonDiv>
-          <Button style={{ background: 'linear-gradient(#E61E4D 0%, #E31C5F 50%, #D70466 100%)' }} onClick={this.sendResData}>
+          <Button onClick={this.sendResData}>
             Reserve
           </Button>
         </ButtonDiv>

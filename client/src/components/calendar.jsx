@@ -17,48 +17,53 @@ const RightCalendarDiv = styled.div`
 `;
 
 const StyledTable = styled.table`
-  table-layout: fixed;
-  width: 100%;
+  width: 90%;
+`;
+
+const BaseTD = styled.td`
+  width: 14.3%;
+  position: relative;
+  font-size: 14px;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  text-align: center;
+  &:after {
+    content: '';
+    display: block;
+    margin-top: 35%;
+  }
 `;
 
 const WeekdayTD = styled.td`
-  font-size: 14px;
-  color: grey;
-  text-align: center;
+  color: #484848;
 `;
 
-const BookedTD = styled.td`
-  font-size: 14px;
-  text-align: center;
+const BookedTD = styled(BaseTD)`
   color: #b0b0b0;
   text-decoration: line-through;
 `;
 
-const AvailableTD = styled.td`
-  font-size: 14px;
-  text-align: center;
-  color: black;
+const AvailableTD = styled(BaseTD)`
+  color: #222222;
   border-radius: 50%;
+  border: 2px solid #ffffff;
   &:hover {
-    border: 1px solid black;
+    border: 2px solid #222222;
   }
 `;
 
-const ChoosenTD = styled.td`
+const ChoosenTD = styled(BaseTD)`
   background: black;
-  color: white;
   border-radius: 50%;
-  text-align: center;
+  color: #ffffff;
 `;
 
-const PartOfResTD = styled.td`
-  font-size: 14px;
-  text-align: center;
-  color: black;
+const PartOfResTD = styled(BaseTD)`
+  color: #222222;
   background: #f7f7f7;
+  border: 2px solid #f7f7f7;
   &:hover {
-    border: 1px solid black;
-    background: white;
+    border: 2px solid #222222;
+    background: #ffffff;
     border-radius: 50%;
   }
 `;
@@ -66,7 +71,9 @@ const PartOfResTD = styled.td`
 const MonthSwitchButton = styled.button`
   border-radius: 50%;
   border: none;
-  background: white;
+  background: #ffffff;
+  height: 25px;
+  width: 25px;
   &:hover {
     background: #f7f7f7
   }
@@ -80,12 +87,15 @@ const CalendarHeader = styled.div`
 
 const MonthButtonDiv = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 `;
 
 const MonthYearDiv = styled.div`
   display: flex;
   justify-content: center;
+  font-family: Circular, -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  color: #222222;
 `;
 
 class Calendar extends React.Component {
@@ -187,6 +197,8 @@ class Calendar extends React.Component {
             return <ChoosenTD key={dayIndex}>{oneDay}</ChoosenTD>;
           } else if (this.partOfRes(oneDay, calMoment)) {
             return <PartOfResTD key={dayIndex}>{oneDay}</PartOfResTD>;
+          } else if (oneDay === ' ') {
+            return <td key={dayIndex} />
           }
           return (
             <AvailableTD onClick={(e) => this.selectDate(e, calMoment)} key={dayIndex}>
@@ -281,14 +293,15 @@ class Calendar extends React.Component {
   // onClick Handlers to Address Day Clicks
   selectDate(e, calMoment) {
     // Creates formatted date for display
-    const { clickCount, updateDates } = this.props;
+    const { clickCount, updateDates, checkin } = this.props;
     const fullDate = this.createDate(e.target.innerHTML, calMoment);
     if (e.target.innerHTML !== ' ') {
       if (!this.isBooked(e.target.innerHTML, calMoment) && clickCount === 1) {
-        console.log('Currently not booked!');
         updateDates(fullDate);
       } else if (!this.isBooked(e.target.innerHTML, calMoment) && clickCount === 2) {
-        if (this.resDatesContinuous(fullDate)) {
+        const checkinMoment = moment(checkin);
+        const fullDateMoment = moment(fullDate);
+        if (this.resDatesContinuous(fullDate) && fullDateMoment.isAfter(checkinMoment)) {
           updateDates(fullDate);
         }
       }
@@ -321,8 +334,12 @@ class Calendar extends React.Component {
         </LeftCalendarDiv>
         <RightCalendarDiv className="rightCalendar">
           <CalendarHeader>
-            <span>{this.month(rightCalendarMoment)} {this.year(rightCalendarMoment)}</span>
-            <MonthSwitchButton onClick={this.moveForwardMonth}> <RightArrowSVG /> </MonthSwitchButton>
+            <MonthYearDiv>
+              {this.month(rightCalendarMoment)} {this.year(rightCalendarMoment)}
+            </MonthYearDiv>
+            <MonthButtonDiv>
+              <MonthSwitchButton onClick={this.moveForwardMonth}> <RightArrowSVG /> </MonthSwitchButton>
+            </MonthButtonDiv>
           </CalendarHeader>
           <StyledTable>
             <thead>

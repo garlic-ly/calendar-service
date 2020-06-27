@@ -26,46 +26,43 @@ describe('Test for App Component', () => {
     expect(instance.state.totalDays).toBe(2);
   });
 
-  test('updateGuest count increases correctly', () => {
+  test('addGuestCount increases correctly', () => {
     const wrapper = shallow(<App />);
     const instance = wrapper.instance();
     let e = {
       target: {
         name: 'adults',
-        innerHTML: '+',
       }
     }
     expect(instance.state.adults).toBe(1);
     expect(instance.state.guestCount).toBe(1);
-    instance.updateGuestCount(e);
+    instance.addGuestCount(e);
     expect(instance.state.adults).toBe(2);
     expect(instance.state.guestCount).toBe(2);
     e.target.name = 'infants';
-    instance.updateGuestCount(e);
+    instance.addGuestCount(e);
     expect(instance.state.infants).toBe(1);
     expect(instance.state.guestCount).toBe(3);
   });
 
-  test('updateGuest count decreases correctly', () => {
+  test('minusGuestCount decreases correctly', () => {
     const wrapper = shallow(<App />);
     const instance = wrapper.instance();
     let e = {
       target: {
         name: 'adults',
-        innerHTML: '+',
       }
     }
     expect(instance.state.adults).toBe(1);
     expect(instance.state.guestCount).toBe(1);
-    instance.updateGuestCount(e);
-    instance.updateGuestCount(e);
+    instance.addGuestCount(e);
+    instance.addGuestCount(e);
     expect(instance.state.adults).toBe(3);
     expect(instance.state.guestCount).toBe(3);
-    e.target.innerHTML = '-';
-    instance.updateGuestCount(e);
-    instance.updateGuestCount(e);
-    instance.updateGuestCount(e);
-    expect(instance.state.adults).toBe(0);
-    expect(instance.state.guestCount).toBe(0);
+    instance.minusGuestCount(e);
+    instance.minusGuestCount(e);
+    instance.minusGuestCount(e);
+    expect(instance.state.adults).toBe(1);
+    expect(instance.state.guestCount).toBe(1);
   });
 })

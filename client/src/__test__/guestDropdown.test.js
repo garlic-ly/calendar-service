@@ -10,7 +10,8 @@ describe('Tests for Guest Dropdown Component', () => {
   test('GuestDropdown renders without crashing', () => {
     const mockCallBack = jest.fn();
     const options = {
-      updateGuestCount: mockCallBack,
+      addGuestCount: mockCallBack,
+      minusGuestCount: mockCallBack,
       adults: 1,
       childrenCount: 0,
       infants: 0,
@@ -24,7 +25,8 @@ describe('Tests for Guest Dropdown Component', () => {
       options.adults = options.adults + 1;
     });
     const options = {
-      updateGuestCount: mockCallBack,
+      addGuestCount: mockCallBack,
+      minusGuestCount: mockCallBack,
       adults: 1,
       childrenCount: 0,
       infants: 0,
@@ -41,7 +43,8 @@ describe('Tests for Guest Dropdown Component', () => {
       options.childrenCount = options.childrenCount - 1;
     });
     const options = {
-      updateGuestCount: mockCallBack,
+      addGuestCount: mockCallBack,
+      minusGuestCount: mockCallBack,
       adults: 1,
       childrenCount: 1,
       infants: 0,
