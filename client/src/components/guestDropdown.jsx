@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import MinusSVG from './icons/minusSVG.jsx';
-import PlusSVG from './icons/plusSVG.jsx';
 
 const GuestPickerDiv = styled.div`
   border-radius: 12px;
