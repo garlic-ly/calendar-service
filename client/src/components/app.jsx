@@ -193,8 +193,8 @@ class App extends React.Component {
   addGuestCount(e) {
     const { name } = e.target;
     const { guestCount } = this.state;
-    let newCount = this.state[name] + 1;
-    let newGuestTotal = guestCount + 1;
+    const newCount = this.state[name] + 1;
+    const newGuestTotal = guestCount + 1;
     this.setState({
       [name]: newCount,
       guestCount: newGuestTotal,
@@ -207,8 +207,8 @@ class App extends React.Component {
     if (guestCount === 1 || this.state[name] === 0 || (name === 'adults' && guestCount === 1)) {
       return;
     }
-    let newCount = this.state[name] - 1;
-    let newGuestTotal = guestCount - 1;
+    const newCount = this.state[name] - 1;
+    const newGuestTotal = guestCount - 1;
     this.setState({
       [name]: newCount,
       guestCount: newGuestTotal,
@@ -253,7 +253,7 @@ class App extends React.Component {
             <PreTotalDivs>${taxes}</PreTotalDivs>
           </AmountOwedOuterDiv>
           <LineBreakDiv>
-            <LineBreak/>
+            <LineBreak />
           </LineBreakDiv>
           <TotalAmtOwedDiv>
             <TotalDiv>Total</TotalDiv>
