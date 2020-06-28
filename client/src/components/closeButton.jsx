@@ -25,7 +25,7 @@ const CloseButton = (props) => {
   const { calendarToggle } = props;
   return (
     <ButtonWrapper>
-      <StyledButton onClick={calendarToggle}> Close </StyledButton>
+      <StyledButton className="close-button" onClick={calendarToggle}> Close </StyledButton>
     </ButtonWrapper>
   );
 };
