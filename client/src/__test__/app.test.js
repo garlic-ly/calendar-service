@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Enzyme, {shallow} from 'enzyme';
+import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import App, { calculateTotals } from '../components/app.jsx';
+import App from '../components/app.jsx';
 
-Enzyme.configure({adapter: new Adapter()});
+Enzyme.configure({ adapter: new Adapter() });
 
 describe('Test for App Component', () => {
   test('App renders without crashing', () => {
@@ -32,8 +32,8 @@ describe('Test for App Component', () => {
     let e = {
       target: {
         name: 'adults',
-      }
-    }
+      },
+    };
     expect(instance.state.adults).toBe(1);
     expect(instance.state.guestCount).toBe(1);
     instance.addGuestCount(e);
@@ -51,8 +51,8 @@ describe('Test for App Component', () => {
     let e = {
       target: {
         name: 'adults',
-      }
-    }
+      },
+    };
     expect(instance.state.adults).toBe(1);
     expect(instance.state.guestCount).toBe(1);
     instance.addGuestCount(e);
@@ -65,4 +65,4 @@ describe('Test for App Component', () => {
     expect(instance.state.adults).toBe(1);
     expect(instance.state.guestCount).toBe(1);
   });
-})
+});

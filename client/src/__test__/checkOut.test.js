@@ -1,10 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import CheckOut from '../components/checkOut.jsx';
-import Enzyme, {shallow} from 'enzyme';
+import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import CheckOut from '../components/checkOut.jsx';
 
-Enzyme.configure({adapter: new Adapter()});
+Enzyme.configure({ adapter: new Adapter() });
 
 describe('Tests for CheckOut Component', () => {
   test('CheckOut renders without crashing', () => {
@@ -12,9 +11,8 @@ describe('Tests for CheckOut Component', () => {
     const options = {
       calendarToggle: mockFn,
       checkout: 'Add a date',
-    }
-
-    const wrapper = shallow(<CheckOut {...options}/>);
+    };
+    const wrapper = shallow(<CheckOut {...options} />);
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -23,8 +21,8 @@ describe('Tests for CheckOut Component', () => {
     const options = {
       calendarToggle: mockFn,
       checkout: 'Add a date',
-    }
-    const checkOut = shallow(<CheckOut {...options}/>);
+    };
+    const checkOut = shallow(<CheckOut {...options} />);
     checkOut.find('div').simulate('click');
     expect(mockFn.mock.calls.length).toEqual(1);
   });
