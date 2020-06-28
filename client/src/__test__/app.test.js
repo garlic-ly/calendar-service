@@ -65,4 +65,30 @@ describe('Test for App Component', () => {
     expect(instance.state.adults).toBe(1);
     expect(instance.state.guestCount).toBe(1);
   });
+
+  test('updateDates changes the check-in date', () => {
+    const wrapper = shallow(<App />);
+    const instance = wrapper.instance();
+    expect(instance.state.clickCount).toBe(1);
+    expect(instance.state.checkin).toBe('Add date');
+    instance.updateDates('07/06/2020');
+    expect(instance.state.clickCount).toBe(2);
+    expect(instance.state.checkin).toBe('07/06/2020');
+  });
+
+  test('calendarToggle changes the calendarOpen state', () => {
+    const wrapper = shallow(<App />);
+    const instance = wrapper.instance();
+    expect(instance.state.calendarOpen).toBe(false);
+    instance.calendarToggle();
+    expect(instance.state.calendarOpen).toBe(true);
+  });
+
+  test('guestMenuToggle changes the isGuestDropdownOpen state', () => {
+    const wrapper = shallow(<App />);
+    const instance = wrapper.instance();
+    expect(instance.state.isGuestDropdownOpen).toBe(false);
+    instance.guestMenuToggle();
+    expect(instance.state.isGuestDropdownOpen).toBe(true);
+  });
 });
