@@ -1,8 +1,8 @@
-DROP DATABASE garlicly;
+DROP DATABASE IF EXISTS garliclyCalendar;
 
-CREATE DATABASE garlicly;
+CREATE DATABASE garliclyCalendar;
 
-USE garlicly;
+USE garliclyCalendar;
 
 CREATE TABLE rooms (
   id INTEGER AUTO_INCREMENT PRIMARY KEY,
