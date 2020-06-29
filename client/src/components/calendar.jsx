@@ -198,7 +198,7 @@ class Calendar extends React.Component {
           } else if (this.partOfRes(oneDay, calMoment)) {
             return <PartOfResTD key={dayIndex}>{oneDay}</PartOfResTD>;
           } else if (oneDay === ' ') {
-            return <td key={dayIndex} />
+            return <td key={dayIndex} />;
           }
           return (
             <AvailableTD onClick={(e) => this.selectDate(e, calMoment)} key={dayIndex}>

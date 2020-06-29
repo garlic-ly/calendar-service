@@ -18,10 +18,10 @@ This repo focuses on the calendar and booking module. From here the user will be
 ## Usage
 
 In order to use this repo you must do the following:
-1. Create a MySQL database using the schema.sql file found in the DB folder.
+1. Create a MySQL database using the schema.sql file found in the DB folder (mysql -u root -p < pathname)
 2. Once that is complete seed the DB by running 'npm run seed'
 3. After the DB has been seeded, compile the project using 'npm run webpack'
-4. Once that is compiled, run 'npm run start' to kick off the server and bring it live.
+4. Once that is compiled, run 'npm run start' to kick off the server and bring it live
 
 ## Requirements
 

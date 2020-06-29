@@ -144,7 +144,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const roomId = window.location.pathname.split('/')[3];
+    const roomId = window.location.pathname.split('/')[2];
+    console.log(roomId);
     this.getRoomData(roomId);
   }
 
@@ -163,7 +164,8 @@ class App extends React.Component {
   }
 
   sendResData() {
-    const roomId = window.location.pathname.split('/')[3];
+    const roomId = window.location.pathname.split('/')[2];
+    console.log(roomId);
     const { checkin, checkout } = this.state;
     if (checkin !== 'Add date' && checkout !== 'Add date') {
       axios.post(`/api/rooms/${roomId}`, {
@@ -193,8 +195,8 @@ class App extends React.Component {
   addGuestCount(e) {
     const { name } = e.target;
     const { guestCount } = this.state;
-    let newCount = this.state[name] + 1;
-    let newGuestTotal = guestCount + 1;
+    const newCount = this.state[name] + 1;
+    const newGuestTotal = guestCount + 1;
     this.setState({
       [name]: newCount,
       guestCount: newGuestTotal,
@@ -207,8 +209,8 @@ class App extends React.Component {
     if (guestCount === 1 || this.state[name] === 0 || (name === 'adults' && guestCount === 1)) {
       return;
     }
-    let newCount = this.state[name] - 1;
-    let newGuestTotal = guestCount - 1;
+    const newCount = this.state[name] - 1;
+    const newGuestTotal = guestCount - 1;
     this.setState({
       [name]: newCount,
       guestCount: newGuestTotal,
@@ -241,7 +243,7 @@ class App extends React.Component {
       return (
         <div>
           <AmountOwedOuterDiv>
-            <PreTotalDivs>{nightlyRate} x {totalDays} Nights</PreTotalDivs>
+            <PreTotalDivs>${nightlyRate} x {totalDays} Nights</PreTotalDivs>
             <PreTotalDivs>${roomOnlyTotal}</PreTotalDivs>
           </AmountOwedOuterDiv>
           <AmountOwedOuterDiv>
@@ -253,7 +255,7 @@ class App extends React.Component {
             <PreTotalDivs>${taxes}</PreTotalDivs>
           </AmountOwedOuterDiv>
           <LineBreakDiv>
-            <LineBreak/>
+            <LineBreak />
           </LineBreakDiv>
           <TotalAmtOwedDiv>
             <TotalDiv>Total</TotalDiv>

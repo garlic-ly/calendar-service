@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Enzyme, {shallow} from 'enzyme';
+import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import App, { calculateTotals } from '../components/app.jsx';
+import App from '../components/app.jsx';
 
-Enzyme.configure({adapter: new Adapter()});
+Enzyme.configure({ adapter: new Adapter() });
 
 describe('Test for App Component', () => {
   test('App renders without crashing', () => {
@@ -32,8 +32,8 @@ describe('Test for App Component', () => {
     let e = {
       target: {
         name: 'adults',
-      }
-    }
+      },
+    };
     expect(instance.state.adults).toBe(1);
     expect(instance.state.guestCount).toBe(1);
     instance.addGuestCount(e);
@@ -51,8 +51,8 @@ describe('Test for App Component', () => {
     let e = {
       target: {
         name: 'adults',
-      }
-    }
+      },
+    };
     expect(instance.state.adults).toBe(1);
     expect(instance.state.guestCount).toBe(1);
     instance.addGuestCount(e);
@@ -65,4 +65,30 @@ describe('Test for App Component', () => {
     expect(instance.state.adults).toBe(1);
     expect(instance.state.guestCount).toBe(1);
   });
-})
+
+  test('updateDates changes the check-in date', () => {
+    const wrapper = shallow(<App />);
+    const instance = wrapper.instance();
+    expect(instance.state.clickCount).toBe(1);
+    expect(instance.state.checkin).toBe('Add date');
+    instance.updateDates('07/06/2020');
+    expect(instance.state.clickCount).toBe(2);
+    expect(instance.state.checkin).toBe('07/06/2020');
+  });
+
+  test('calendarToggle changes the calendarOpen state', () => {
+    const wrapper = shallow(<App />);
+    const instance = wrapper.instance();
+    expect(instance.state.calendarOpen).toBe(false);
+    instance.calendarToggle();
+    expect(instance.state.calendarOpen).toBe(true);
+  });
+
+  test('guestMenuToggle changes the isGuestDropdownOpen state', () => {
+    const wrapper = shallow(<App />);
+    const instance = wrapper.instance();
+    expect(instance.state.isGuestDropdownOpen).toBe(false);
+    instance.guestMenuToggle();
+    expect(instance.state.isGuestDropdownOpen).toBe(true);
+  });
+});

@@ -1,10 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import GuestDropdown from '../components/guestDropdown.jsx';
-import Enzyme, {shallow} from 'enzyme';
+import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import GuestDropdown from '../components/guestDropdown.jsx';
 
-Enzyme.configure({adapter: new Adapter()});
+Enzyme.configure({ adapter: new Adapter() });
 
 describe('Tests for Guest Dropdown Component', () => {
   test('GuestDropdown renders without crashing', () => {
@@ -15,8 +14,8 @@ describe('Tests for Guest Dropdown Component', () => {
       adults: 1,
       childrenCount: 0,
       infants: 0,
-    }
-    const wrapper = shallow(<GuestDropdown {...options}/>);
+    };
+    const wrapper = shallow(<GuestDropdown {...options} />);
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -30,8 +29,8 @@ describe('Tests for Guest Dropdown Component', () => {
       adults: 1,
       childrenCount: 0,
       infants: 0,
-    }
-    const guest = shallow((<GuestDropdown {...options}/>));
+    };
+    const guest = shallow((<GuestDropdown {...options} />));
     expect(options.adults).toBe(1);
     guest.find('.adults-add').simulate('click');
     expect(mockCallBack.mock.calls.length).toEqual(1);
@@ -48,8 +47,8 @@ describe('Tests for Guest Dropdown Component', () => {
       adults: 1,
       childrenCount: 1,
       infants: 0,
-    }
-    const guest = shallow((<GuestDropdown {...options}/>));
+    };
+    const guest = shallow((<GuestDropdown {...options} />));
     expect(options.childrenCount).toBe(1);
     guest.find('.children-minus').simulate('click');
     expect(mockCallBack.mock.calls.length).toEqual(1);

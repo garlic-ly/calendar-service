@@ -14,8 +14,8 @@ const DatePicker = (props) => {
   const { checkin, checkout, calendarToggle } = props;
   return (
     <DatePickerWrapper>
-      <CheckIn checkin={checkin} calendarToggle={calendarToggle}/>
-      <CheckOut checkout={checkout} calendarToggle={calendarToggle}/>
+      <CheckIn checkin={checkin} calendarToggle={calendarToggle} />
+      <CheckOut checkout={checkout} calendarToggle={calendarToggle} />
     </DatePickerWrapper>
   );
 };
