@@ -144,7 +144,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const roomId = window.location.pathname.split('/')[3];
+    const roomId = window.location.pathname.split('/')[2];
+    console.log(roomId);
     this.getRoomData(roomId);
   }
 
@@ -163,7 +164,8 @@ class App extends React.Component {
   }
 
   sendResData() {
-    const roomId = window.location.pathname.split('/')[3];
+    const roomId = window.location.pathname.split('/')[2];
+    console.log(roomId);
     const { checkin, checkout } = this.state;
     if (checkin !== 'Add date' && checkout !== 'Add date') {
       axios.post(`/api/rooms/${roomId}`, {
@@ -241,7 +243,7 @@ class App extends React.Component {
       return (
         <div>
           <AmountOwedOuterDiv>
-            <PreTotalDivs>{nightlyRate} x {totalDays} Nights</PreTotalDivs>
+            <PreTotalDivs>${nightlyRate} x {totalDays} Nights</PreTotalDivs>
             <PreTotalDivs>${roomOnlyTotal}</PreTotalDivs>
           </AmountOwedOuterDiv>
           <AmountOwedOuterDiv>
