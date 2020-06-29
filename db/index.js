@@ -4,5 +4,5 @@ const mysql = require('mysql');
 module.exports.connection = mysql.createConnection({
   host: 'localhost',
   user: 'student',
-  database: 'garlicly',
+  database: 'garliclyCalendar',
 });
