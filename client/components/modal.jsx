@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import CalendarPopUp from './calendarPopUp.jsx';
 
 const ModalWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width:100%;
@@ -16,17 +16,16 @@ const ModalHide = styled(ModalWrapper)`
   display: none;
 `;
 const ModalContent = styled.div`
-  position:fixed;
+  position: absolute;
   background: #ffffff;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
   border-radius: 12px;
-  width: 75%;
   height: auto;
-  top:25%;
-  left:16%;
   transform: translate(-12%,-12%);
 `;
+ // top:10%;
+ // left:10%;
 
 const Modal = (props) => {
   const { bookedNights, checkin, checkout, calendarToggle } = props;

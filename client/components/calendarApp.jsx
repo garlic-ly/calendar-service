@@ -13,11 +13,10 @@ const StyledWrapper = styled.div`
   box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
   border-radius: 12px;
   height: auto;
-  width: 30%;
   position: absolute;
-  top: 10%;
-  left: 10%;
 `;
+// top: 10%;
+// left: 10%;
 const DollarAmtSpan = styled.span`
   font-size: 22px;
   font-weight: bold;
