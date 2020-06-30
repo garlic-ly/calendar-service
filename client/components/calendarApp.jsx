@@ -145,12 +145,11 @@ class CalendarApp extends React.Component {
 
   componentDidMount() {
     const roomId = window.location.pathname.split('/')[2];
-    console.log(roomId);
     this.getRoomData(roomId);
   }
 
   getRoomData(id) {
-    axios.get(`/api/rooms/${id}`)
+    axios.get(`/api/calendar/${id}`)
       .then((results) => {
         const reservations = results.data.slice(1);
         this.setState({
@@ -165,10 +164,9 @@ class CalendarApp extends React.Component {
 
   sendResData() {
     const roomId = window.location.pathname.split('/')[2];
-    console.log(roomId);
     const { checkin, checkout } = this.state;
     if (checkin !== 'Add date' && checkout !== 'Add date') {
-      axios.post(`/api/rooms/${roomId}`, {
+      axios.post(`/api/calendar/${roomId}`, {
         startDate: checkin,
         endDate: checkout,
       })

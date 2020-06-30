@@ -7,7 +7,7 @@ const app = express();
 app.use('/rooms/:roomId', express.static(path.join(__dirname, '/../public')));
 
 // GET Route
-app.get('/api/rooms/:roomId', (req, res) => {
+app.get('/api/calendar/:roomId', (req, res) => {
   const { roomId } = req.params;
   const roomQuery = 'SELECT * FROM rooms WHERE id = ?';
   db.connection.query(roomQuery, [roomId], (roomError, roomResults) => {
@@ -27,7 +27,7 @@ app.get('/api/rooms/:roomId', (req, res) => {
   });
 });
 
-app.post('/api/rooms/:roomId', (req, res) => {
+app.post('/api/calendar/:roomId', (req, res) => {
   const { roomId } = req.params;
   res.status(201).end();
 });
