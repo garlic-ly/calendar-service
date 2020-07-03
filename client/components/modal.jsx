@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import CalendarPopUp from './calendarPopUp.jsx';
 
 const ModalWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width:100%;
@@ -16,10 +16,13 @@ const ModalHide = styled(ModalWrapper)`
   display: none;
 `;
 const ModalContent = styled.div`
-  position: absolute;
+  position: relative;
   background: #ffffff;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 0px;
+  width: 50%;
+  top:25%;
+  left:50%;
   border-radius: 12px;
   height: auto;
   transform: translate(-12%,-12%);
